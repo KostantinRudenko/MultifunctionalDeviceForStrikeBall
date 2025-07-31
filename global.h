@@ -24,4 +24,11 @@ const uint8_t IGNITER_PIN = 10;
 const uint8_t MODE_BTN = 20;
 const uint8_t TIMER_BTN = 21;
 
+const enum GameModes(
+	BASE,
+	SIREN_ONLY,
+	IGNITER_ONLY,
+	TIMER
+);
+
 #endif // !_GLOBAL_H_
