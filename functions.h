@@ -8,12 +8,6 @@ const int LIGHT_DELAY = 250;
 
 #pragma endregion Constants
 
-#pragma region ______________________________ Variables
-
-unsigned int time;
-
-#pragma endregion Variables
-
 void BlinkOneLED(uint8_t ledPin) {
   uint8_t last_state = digitalRead(ledPin);
   digitalWrite(ledPin, !last_state);
