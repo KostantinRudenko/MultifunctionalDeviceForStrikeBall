@@ -22,6 +22,8 @@ void setup() {
 
   pinMode(MODE_BTN, INPUT);
   pinMode(TIMER_BTN, INPUT);
+
+  StartAnimation();
 }
 
 void loop() {

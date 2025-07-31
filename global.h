@@ -3,8 +3,8 @@
 
 #pragma region ______________________________ Constants
 
-#define LED_ON  HIGH
-#define LED_OFF LOW
+#define LED_ON  1
+#define LED_OFF 0
 
 // Распиновка светодиодов, сенсора движения и пины транзисторов для сирены и зажигателя
 
