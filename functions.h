@@ -10,9 +10,16 @@ const int LIGHT_DELAY = 250;
 
 #pragma region ______________________________ Variables
 
-unsigned float time;
+unsigned int time;
 
 #pragma endregion Variables
+
+void BlinkOneLED(uint8_t ledPin) {
+  uint8_t last_state = digitalRead(ledPin);
+  digitalWrite(ledPin, !last_state);
+  delay(250);
+  digitalWrite(ledPin, last_state);
+}
 
 void AllLEDS(uint8_t state){
 	for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
