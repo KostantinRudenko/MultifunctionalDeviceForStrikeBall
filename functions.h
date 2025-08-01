@@ -28,7 +28,7 @@ void CheckGameMode(GameMode& gameMode);
 void BlinkOneLED(uint8_t ledPin) {
   uint8_t last_state = digitalRead(ledPin);
   digitalWrite(ledPin, !last_state);
-  delay(250);
+  delay(LIGHT_DELAY);
   digitalWrite(ledPin, last_state);
 }
 
@@ -55,14 +55,14 @@ void StartAnimation(){
 	AllLEDS(LED_OFF);
 }
 
-void WaitForConfirmingGameMode(bool& isTimerRunning, GameMode& gameMode, unsigned long& time) {
-	if (isTimerRunning && (millis() >= time)) {
+void WaitForConfirmingGameMode(bool& isTimerRunning, GameMode& gameMode, unsigned long& timer) {
+	if (isTimerRunning && (millis() >= timer)) {
         isTimerRunning = false;
-		CheckGameMode(gameMode);
+		    CheckGameMode(gameMode);
     }
     else if (!isTimerRunning) {
-    	isTimerRunning = true;
-        time = millis() + CONFIRM_TIME;
+    	  isTimerRunning = true;
+        timer = millis() + CONFIRM_TIME;
     }
 }
 

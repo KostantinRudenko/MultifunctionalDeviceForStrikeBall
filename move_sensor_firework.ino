@@ -10,7 +10,7 @@
 
 bool isTimerRunning = false;
 
-unsigned long time = 0;
+unsigned long timer = 0;
 uint8_t deviceState = 0;
 GameMode gameMode = NONE;
 
@@ -54,7 +54,7 @@ void loop() {
         time = milis() + CONFIRM_TIME;
         break;
       } */
-      WaitForConfirmingGameMode(isTimerRunning, gameMode, time);
+      WaitForConfirmingGameMode(isTimerRunning, gameMode, timer);
       if (digitalRead(MODE_BTN)) {
         isTimerRunning = false;
         gameMode = static_cast<GameMode>((gameMode + 1) % 5);
