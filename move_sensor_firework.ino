@@ -6,6 +6,16 @@
 
 #pragma endregion Includes
 
+#pragma region ______________________________ ConstantsAndVariables
+
+bool isTimerRunning = false;
+
+unsigned long time = 0;
+uint8_t deviceState = 0;
+GameMode gameMode = NONE;
+
+#pragma endregion ConstantsAndVariables
+
 void setup() {
   pinMode(LED_1_RED_PIN, OUTPUT);
   pinMode(LED_2_RED_PIN, OUTPUT);
@@ -27,5 +37,27 @@ void setup() {
 }
 
 void loop() {
-
+  switch (deviceState) {
+    case 0:
+      if (digitalRead(MODE_BTN)) {
+        deviceState++;
+        break;
+      }
+    case 1:
+      /* if (isTimerRunning && (milis() >= time)) {
+        isTimerRunning = false;
+        gameMode++;
+        break;
+      }
+      else if (!isTimerRunning) {
+        isTimerRunning = true;
+        time = milis() + CONFIRM_TIME;
+        break;
+      } */
+      WaitForConfirmingGameMode(isTimerRunning, gameMode, time);
+      if (digitalRead(MODE_BTN)) {
+        isTimerRunning = false;
+        gameMode = static_cast<GameMode>((gameMode + 1) % 5);
+      }
+  }
 }

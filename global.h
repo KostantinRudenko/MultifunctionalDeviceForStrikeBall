@@ -24,11 +24,19 @@ const uint8_t IGNITER_PIN = 10;
 const uint8_t MODE_BTN = 20;
 const uint8_t TIMER_BTN = 21;
 
-enum GameModes {
+enum GameMode {
+	NONE = 0,
 	BASE,
 	SIREN_ONLY,
 	IGNITER_ONLY,
 	TIMER
 };
+/*
+GameMode operator++(GameMode& mode) {
+	mode = static_cast<GameMode>((mode + 1) % 5);
+	return mode;
+}*/
+
+const unsigned int CONFIRM_TIME = 8000;
 
 #endif // !_GLOBAL_H_
