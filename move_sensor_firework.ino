@@ -8,8 +8,8 @@
 
 #pragma region ______________________________ Variables
 
-GameMode gMode = NONE;
-
+//GameMode gMode = NONE;
+int gMode = 0;
 #pragma endregion Variables
 
 void setup() {
@@ -37,26 +37,29 @@ void setup() {
 void loop() {
   delay(50);
   if (digitalRead(MODE_BTN) == 1) {
-    gMode = static_cast<GameMode>((gMode + 1) % 5);
+    delay(100)
+    if (digitalRead(MODE_BTN) == 1){
+        gMode = (gMode+1) % 5;    
+      }
   }
   switch (gMode) {
-    case NONE:
+    case 0:
       Serial.println("NONE");
       AllLEDS(LED_OFF);
       digitalWrite(0, 1);
-    case BASE:
+    case 1:
       Serial.println("BASE");
       AllLEDS(LED_OFF);
       digitalWrite(1, 1);
-    case SIREN_ONLY:
+    case 2:
       Serial.println("SIREN_ONLY");
       AllLEDS(LED_OFF);
       digitalWrite(2, 1);
-    case IGNITER_ONLY:
+    case 3:
       Serial.println("IGNITER_ONLY");
       AllLEDS(LED_OFF);
       digitalWrite(3, 1);
-    case TIMER:
+    case 4:
       Serial.println("TIMER");
       AllLEDS(LED_OFF);
       digitalWrite(4, 1);
