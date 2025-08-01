@@ -36,8 +36,7 @@ void setup() {
 }
 
 void loop() {
-  delay(50);
-  if (digitalRead(MODE_BTN) == 1) {
+  if (digitalRead(MODE_BTN) == 0) {
     //delay(100)
     //if (digitalRead(MODE_BTN) == 1){
         Serial.println("Changing...");
@@ -68,4 +67,5 @@ void loop() {
       AllLEDS(LED_OFF);
       digitalWrite(4, 1);
   }
+  delay(250);
 }
