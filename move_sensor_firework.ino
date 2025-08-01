@@ -26,8 +26,8 @@ void setup() {
   pinMode(SIREN_PIN, OUTPUT);
   pinMode(IGNITER_PIN, OUTPUT);
 
-  pinMode(MODE_BTN, INPUT);
-  pinMode(TIMER_BTN, INPUT);
+  pinMode(MODE_BTN, INPUT_PULLUP);
+  pinMode(TIMER_BTN, INPUT_PULLUP);
 
   Serial.begin(9600);
   Serial.println("INITIALIZED");
