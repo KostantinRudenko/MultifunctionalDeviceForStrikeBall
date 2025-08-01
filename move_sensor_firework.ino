@@ -30,6 +30,7 @@ void setup() {
   pinMode(TIMER_BTN, INPUT);
 
   Serial.begin(9600);
+  Serial.println("INITIALIZED");
 
   StartAnimation();
 }
@@ -37,10 +38,13 @@ void setup() {
 void loop() {
   delay(50);
   if (digitalRead(MODE_BTN) == 1) {
-    delay(100)
-    if (digitalRead(MODE_BTN) == 1){
-        gMode = (gMode+1) % 5;    
-      }
+    //delay(100)
+    //if (digitalRead(MODE_BTN) == 1){
+        Serial.println("Changing...");
+        gMode = (gMode+1) % 5;
+        Serial.print("Mode: ");
+        Serial.println(gMode);
+      //}
   }
   switch (gMode) {
     case 0:
