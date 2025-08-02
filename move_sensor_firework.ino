@@ -10,6 +10,7 @@
 
 //GameMode gMode = NONE;
 int gMode = 0;
+
 #pragma endregion Variables
 
 void setup() {
