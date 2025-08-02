@@ -17,12 +17,15 @@
  * Led number is same to the game mode number so modeLedPin=gMode
  * -------------------------------- */
 
-
+uint8_t state = 0;
 uint8_t gMode = 0;
 uint8_t modeLedPin = gMode;
+
 unsigned long timer = 0;
+
 bool isTimerRunning = false;
-bool isModeChoosen = false;
+bool isWaitingForActivation = false;
+bool isModeActivated = false;
 
 #pragma endregion Variables
 
@@ -47,42 +50,57 @@ void setup() {
 }
 
 void loop() {
-  if (digitalRead(MODE_BTN) == 0 && !isModeChoosen) {
+  switch (state) {
+    case 0:
+      
+      if (digitalRead(MODE_BTN) == 0) {
         gMode = (gMode+1) % 5;
         modeLedPin = gMode;
         timer = millis() + CONFIRM_TIME;
         isTimerRunning = true;
-        isModeChoosen = false;
-  }
-  if (isTimerRunning && (millis() > timer) && (!gMode == 0)) {
-    isTimerRunning = false;
-    isModeChoosen = true;
-    digitalWrite(modeLedPin, LED_OFF);
-    delay(LED_DELAY);
-    digitalWrite(modeLedPin, LED_ON);
-    delay(LED_DELAY);
-    digitalWrite(modeLedPin, LED_OFF);
-  }
-  /* switch (gMode) {
-    case 0: // None
+        isWaitingForActivation = false;
+
+        state++;
+        break;
+      }
       AllLEDS(LED_OFF);
       digitalWrite(modeLedPin, LED_ON);
-    case 1: // Basic
+      delay(BUTTON_DELAY);
+
+  case 1:
+    
+    if (isTimerRunning && !isModeActivated) {
+      if (millis() > timer){
+      isTimerRunning = false;
+      isWaitingForActivation = true;
+      
+      BlinkOneLED(modeLedPin);
+      delay(LED_DELAY);
+      digitalWrite(modeLedPin, LED_OFF);
+      
+      state++;
+      break;
+      }
+    }
+
+  case 2:
+    
+    if (digitalRead(MODE_BTN) == 0) {
+      isWaitingForActivation = false;
+      AutostartAnimation();
       AllLEDS(LED_OFF);
-      digitalWrite(modeLedPin, LED_ON);
-    case 2: // Siren only
-      AllLEDS(LED_OFF);
-      digitalWrite(modeLedPin, LED_ON);
-    case 3: // Igniter only
-      AllLEDS(LED_OFF);
-      digitalWrite(modeLedPin, LED_ON);
-    case 4: // Timer
-      AllLEDS(LED_OFF);
-      digitalWrite(modeLedPin, LED_ON);
-  } */
-  if (!modeLedPin) {
-    AllLEDS(LED_OFF);
-    digitalWrite(modeLedPin, LED_ON);
+      isModeActivated = true;
+      state++;
+      break;
+    }
     delay(BUTTON_DELAY);
+  
+  case 3:
+    if (digitalRead(PIR_SENSOR_PIN) == 0){
+      AllLEDS(LED_ON);
+    }
+    else{
+      AllLEDS(LED_OFF);
+    }
   }
 }

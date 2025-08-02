@@ -13,6 +13,7 @@ void BlinkOneLED(uint8_t ledPin);
 void AllLEDS(uint8_t state);
 void LightLEDSOneByOne();
 void StartAnimation();
+void AutostartAnimation();
 
 #pragma endregion Functions
 
@@ -44,6 +45,15 @@ void StartAnimation(){
 	AllLEDS(LED_ON);
 	delay(LED_DELAY);
 	AllLEDS(LED_OFF);
+}
+
+void AutostartAnimation(){
+  unsigned int delay_time = (LED_AMOUNT*LED_DELAY + AUTOSTART_TIME)/LED_AMOUNT;
+  AllLEDS(LED_OFF);
+  for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
+		digitalWrite(ledNum, LED_ON);
+		delay(delay_time);
+	}
 }
 
 #endif // !_FUNCTIONS_H_
