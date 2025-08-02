@@ -8,8 +8,21 @@
 
 #pragma region ______________________________ Variables
 
-//GameMode gMode = NONE;
-int gMode = 0;
+/* ---------- Game Modes ----------
+ * 0 - None
+ * 1 - Basic mode
+ * 2 - Siren only mode
+ * 3 - Igniter only mode
+ * 4 - Timer mode with igniter
+ * Led number is same to the game mode number so modeLedPin=gMode
+ * -------------------------------- */
+
+
+uint8_t gMode = 0;
+uint8_t modeLedPin = gMode;
+unsigned long timer = 0;
+bool isTimerRunning = false;
+bool isModeChoosen = false;
 
 #pragma endregion Variables
 
@@ -30,43 +43,46 @@ void setup() {
   pinMode(MODE_BTN, INPUT_PULLUP);
   pinMode(TIMER_BTN, INPUT_PULLUP);
 
-  Serial.begin(9600);
-  Serial.println("INITIALIZED");
-
   StartAnimation();
 }
 
 void loop() {
-  if (digitalRead(MODE_BTN) == 0) {
-    //delay(100)
-    //if (digitalRead(MODE_BTN) == 1){
-        Serial.println("Changing...");
+  if (digitalRead(MODE_BTN) == 0 && !isModeChoosen) {
         gMode = (gMode+1) % 5;
-        Serial.print("Mode: ");
-        Serial.println(gMode);
-      //}
+        modeLedPin = gMode;
+        timer = millis() + CONFIRM_TIME;
+        isTimerRunning = true;
+        isModeChoosen = false;
   }
-  switch (gMode) {
-    case 0:
-      Serial.println("NONE");
-      AllLEDS(LED_OFF);
-      digitalWrite(0, 1);
-    case 1:
-      Serial.println("BASE");
-      AllLEDS(LED_OFF);
-      digitalWrite(1, 1);
-    case 2:
-      Serial.println("SIREN_ONLY");
-      AllLEDS(LED_OFF);
-      digitalWrite(2, 1);
-    case 3:
-      Serial.println("IGNITER_ONLY");
-      AllLEDS(LED_OFF);
-      digitalWrite(3, 1);
-    case 4:
-      Serial.println("TIMER");
-      AllLEDS(LED_OFF);
-      digitalWrite(4, 1);
+  if (isTimerRunning && (millis() > timer) && (!gMode == 0)) {
+    isTimerRunning = false;
+    isModeChoosen = true;
+    digitalWrite(modeLedPin, LED_OFF);
+    delay(LED_DELAY);
+    digitalWrite(modeLedPin, LED_ON);
+    delay(LED_DELAY);
+    digitalWrite(modeLedPin, LED_OFF);
   }
-  delay(250);
+  /* switch (gMode) {
+    case 0: // None
+      AllLEDS(LED_OFF);
+      digitalWrite(modeLedPin, LED_ON);
+    case 1: // Basic
+      AllLEDS(LED_OFF);
+      digitalWrite(modeLedPin, LED_ON);
+    case 2: // Siren only
+      AllLEDS(LED_OFF);
+      digitalWrite(modeLedPin, LED_ON);
+    case 3: // Igniter only
+      AllLEDS(LED_OFF);
+      digitalWrite(modeLedPin, LED_ON);
+    case 4: // Timer
+      AllLEDS(LED_OFF);
+      digitalWrite(modeLedPin, LED_ON);
+  } */
+  if (!modeLedPin) {
+    AllLEDS(LED_OFF);
+    digitalWrite(modeLedPin, LED_ON);
+    delay(BUTTON_DELAY);
+  }
 }

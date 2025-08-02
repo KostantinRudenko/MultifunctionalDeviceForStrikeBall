@@ -6,7 +6,11 @@
 #define LED_ON  1
 #define LED_OFF 0
 
-// Распиновка светодиодов, сенсора движения и пины транзисторов для сирены и зажигателя
+const uint8_t BUTTON_DELAY = 100;
+const uint8_t LED_DELAY = 250;
+
+
+const uint8_t LED_AMOUNT = 7;
 
 const uint8_t LED_1_RED_PIN = 0;
 const uint8_t LED_2_RED_PIN = 1;
@@ -24,19 +28,6 @@ const uint8_t IGNITER_PIN = 10;
 const uint8_t MODE_BTN = 20;
 const uint8_t TIMER_BTN = 21;
 
-enum GameMode {
-	NONE = 0,
-	BASE,
-	SIREN_ONLY,
-	IGNITER_ONLY,
-	TIMER
-};
-/*
-GameMode operator++(GameMode& mode) {
-	mode = static_cast<GameMode>((mode + 1) % 5);
-	return mode;
-}*/
-
-const unsigned int CONFIRM_TIME = 8000;
+const unsigned int CONFIRM_TIME = 5000;
 
 #endif // !_GLOBAL_H_
