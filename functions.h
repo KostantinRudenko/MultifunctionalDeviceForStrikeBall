@@ -15,6 +15,11 @@ void LightLEDSOneByOne();
 void StartAnimation();
 void AutostartAnimation();
 
+void BasicMode();
+void OnlySirenMode();
+void OnlyIgniterMode();
+void TimerMode(const unsigned int& timer, bool& isTimerRunning);
+
 #pragma endregion Functions
 
 void BlinkOneLED(uint8_t ledPin) {
@@ -32,7 +37,7 @@ void AllLEDS(uint8_t state){
 
 void LightLEDSOneByOne(){
 	for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
-		digitalWrite(ledNum, LED_ON);
+		digitalWrite(ledNum, ON);
 		delay(LED_DELAY);
 	}
 }
@@ -40,21 +45,67 @@ void LightLEDSOneByOne(){
 void StartAnimation(){
 	LightLEDSOneByOne();
 	delay(LED_DELAY);
-	AllLEDS(LED_OFF);
+	AllLEDS(OFF);
 	delay(LED_DELAY);
-	AllLEDS(LED_ON);
+	AllLEDS(ON);
 	delay(LED_DELAY);
-	AllLEDS(LED_OFF);
+	AllLEDS(OFF);
 }
 
 void AutostartAnimation(){
   unsigned int delay_time = (LED_AMOUNT*LED_DELAY + AUTOSTART_TIME)/LED_AMOUNT;
-  AllLEDS(LED_OFF);
+  AllLEDS(OFF);
   for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
-		digitalWrite(ledNum, LED_ON);
+		digitalWrite(ledNum, ON);
 		delay(delay_time);
 	}
-  AllLEDS(LED_OFF);
+  AllLEDS(OFF);
+}
+
+bool IsPirSensorActive() {
+  return digitalRead(PIR_SENSOR_PIN) == 1;
+}
+
+void BasicMode() {
+  if (IsPirSensorActive()) {
+    digitalWrite(SIREN_PIN, ON);
+    digitalWrite(IGNITER_PIN, ON);
+    delay(IGNITER_DELAY);
+  }
+  else {
+    digitalWrite(SIREN_PIN, OFF);
+    digitalWrite(IGNITER_PIN, OFF);
+  }
+  delay(BOUNCE_DELAY);
+}
+
+void OnlySirenMode() {
+  if (IsPirSensorActive()) {
+    digitalWrite(SIREN_PIN, ON);
+  }
+  else {
+    digitalWrite(SIREN_PIN, OFF);
+  }
+  delay(BOUNCE_DELAY);
+}
+
+void OnlyIgniterMode() {
+  if (IsPirSensorActive()) {
+    digitalWrite(IGNITER_PIN, ON);
+    delay(IGNITER_DELAY);
+  }
+  else {
+    digitalWrite(IGNITER_PIN, OFF);
+  }
+  delay(BOUNCE_DELAY); 
+}
+
+void TimerMode(const unsigned int& timer, bool& isTimerRunning) {
+  if (millis() > timer){
+    digitalWrite(IGNITER_PIN, ON);
+    delay(IGNITER_DELAY);
+    isTimerRunning = false;
+  }
 }
 
 #endif // !_FUNCTIONS_H_

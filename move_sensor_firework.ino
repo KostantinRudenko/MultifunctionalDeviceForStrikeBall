@@ -8,14 +8,13 @@
 
 #pragma region ______________________________ Variables
 
-/* ---------- Game Modes ----------
- * 0 - None
- * 1 - Basic mode
- * 2 - Siren only mode
- * 3 - Igniter only mode
- * 4 - Timer mode with igniter
- * Led number is same to the game mode number so modeLedPin=gMode
- * -------------------------------- */
+/* ---------- Режими ----------
+ * 1 - Базовый режим (сирена + зажигатель)
+ * 2 - Режим только сирены
+ * 3 - Режим только зажигателя
+ * 4 - Таймер с зажигателям
+ * Номер светодиода соответствует номеру режима modeLedPin=gMode
+ * ---------------------------- */
 
 uint8_t state = 0;
 uint8_t gMode = 0;
@@ -54,15 +53,15 @@ void loop() {
     
     case 0:
       
-      if (digitalRead(MODE_BTN) == 0) {
-        gMode = (gMode+1) % 4;
+      if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
+        gMode = (gMode+1) % MODES_AMOUNT;
         modeLedPin = gMode;
         timer = millis() + CONFIRM_TIME;
         isTimerRunning = true;
         isWaitingForActivation = false;
       }
-      AllLEDS(LED_OFF);
-      digitalWrite(modeLedPin, LED_ON);
+      AllLEDS(OFF);
+      digitalWrite(modeLedPin, ON);
       delay(BUTTON_DELAY);
       state = 1;
 
@@ -75,7 +74,7 @@ void loop() {
         
         BlinkOneLED(modeLedPin);
         delay(LED_DELAY);
-        digitalWrite(modeLedPin, LED_OFF);
+        digitalWrite(modeLedPin, OFF);
         
         state = 2;
         break;
@@ -85,7 +84,7 @@ void loop() {
 
     case 2:
 
-      if (digitalRead(MODE_BTN) == 0) {
+      if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         isWaitingForActivation = false;
         AutostartAnimation();
         isModeActivated = true;
@@ -99,13 +98,20 @@ void loop() {
 
       switch (gMode) {
 
-        case 1: // Basic
-          break;  
+        case 1:
+          BasicMode();
+          break;
         case 2:
+          OnlySirenMode();
           break;
         case 3:
+          OnlyIgniterMode();
           break;
         case 4:
+          if (!isTimerRunning){
+            timer = millis();
+          }
+          TimerMode(timer, isTimerRunning);
           break;
       }
   }

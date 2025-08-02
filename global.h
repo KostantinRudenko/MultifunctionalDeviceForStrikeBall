@@ -3,14 +3,18 @@
 
 #pragma region ______________________________ Constants
 
-#define LED_ON  1
-#define LED_OFF 0
+#define ON  1
+#define OFF 0
 
 const uint8_t BUTTON_DELAY = 250;
 const uint8_t LED_DELAY = 250;
+const uint8_t BOUNCE_DELAY = 50;
+const uint16_t IGNITER_DELAY = 500;
 
+const uint8_t BUTTON_CLICKED = 0;
 
 const uint8_t LED_AMOUNT = 7;
+const uint8_t MODES_AMOUNT = 4;
 
 const uint8_t LED_1_RED_PIN = 0;
 const uint8_t LED_2_RED_PIN = 1;
