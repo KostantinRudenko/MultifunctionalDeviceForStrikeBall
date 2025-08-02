@@ -55,7 +55,7 @@ void loop() {
     case 0:
       
       if (digitalRead(MODE_BTN) == 0) {
-        gMode = (gMode+1) % 5;
+        gMode = (gMode+1) % 4;
         modeLedPin = gMode;
         timer = millis() + CONFIRM_TIME;
         isTimerRunning = true;
@@ -97,12 +97,16 @@ void loop() {
   
     case 3:
 
-      if (digitalRead(PIR_SENSOR_PIN) == 1){
-        AllLEDS(LED_ON);
+      switch (gMode) {
+
+        case 1: // Basic
+          break;  
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
       }
-      else{
-        AllLEDS(LED_OFF);
-      }
-      break;
   }
 }
