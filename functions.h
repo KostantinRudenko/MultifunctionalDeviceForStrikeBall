@@ -54,6 +54,7 @@ void AutostartAnimation(){
 		digitalWrite(ledNum, LED_ON);
 		delay(delay_time);
 	}
+  AllLEDS(LED_OFF);
 }
 
 #endif // !_FUNCTIONS_H_

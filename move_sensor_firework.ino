@@ -51,6 +51,7 @@ void setup() {
 
 void loop() {
   switch (state) {
+    
     case 0:
       
       if (digitalRead(MODE_BTN) == 0) {
@@ -59,48 +60,49 @@ void loop() {
         timer = millis() + CONFIRM_TIME;
         isTimerRunning = true;
         isWaitingForActivation = false;
-
-        state++;
-        break;
       }
       AllLEDS(LED_OFF);
       digitalWrite(modeLedPin, LED_ON);
       delay(BUTTON_DELAY);
+      state = 1;
 
-  case 1:
-    
-    if (isTimerRunning && !isModeActivated) {
-      if (millis() > timer){
-      isTimerRunning = false;
-      isWaitingForActivation = true;
-      
-      BlinkOneLED(modeLedPin);
-      delay(LED_DELAY);
-      digitalWrite(modeLedPin, LED_OFF);
-      
-      state++;
-      break;
+    case 1:
+
+      if (isTimerRunning && !isModeActivated) {
+        if (millis() > timer){
+        isTimerRunning = false;
+        isWaitingForActivation = true;
+        
+        BlinkOneLED(modeLedPin);
+        delay(LED_DELAY);
+        digitalWrite(modeLedPin, LED_OFF);
+        
+        state = 2;
+        break;
+        }
       }
-    }
+      state = 0;
 
-  case 2:
-    
-    if (digitalRead(MODE_BTN) == 0) {
-      isWaitingForActivation = false;
-      AutostartAnimation();
-      AllLEDS(LED_OFF);
-      isModeActivated = true;
-      state++;
+    case 2:
+
+      if (digitalRead(MODE_BTN) == 0) {
+        isWaitingForActivation = false;
+        AutostartAnimation();
+        isModeActivated = true;
+        state = 3;
+        break;
+      }
+      delay(BUTTON_DELAY);
       break;
-    }
-    delay(BUTTON_DELAY);
   
-  case 3:
-    if (digitalRead(PIR_SENSOR_PIN) == 0){
-      AllLEDS(LED_ON);
-    }
-    else{
-      AllLEDS(LED_OFF);
-    }
+    case 3:
+
+      if (digitalRead(PIR_SENSOR_PIN) == 1){
+        AllLEDS(LED_ON);
+      }
+      else{
+        AllLEDS(LED_OFF);
+      }
+      break;
   }
 }
