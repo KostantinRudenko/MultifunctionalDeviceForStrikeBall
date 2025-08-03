@@ -48,31 +48,25 @@ void LightLEDSOneByOne() {
 }
 
 void RunningLEDLightUp() {
-  for (uint8_t analog=0; analog<256; analog++) {
-    analogWrite(LED_PIN_1, analog);
-  }
+  digitalWrite(LED_PIN_1, ON);
+  delay(RUNNING_LED_DELAY);
 
   for (uint8_t ledNum=1; ledNum<LED_AMOUNT; ledNum++) {
-    for (uint8_t analog=0; analog<256; analog++) {
-      analogWrite(ledNum-1, 255-analog);
-      analogWrite(ledNum, analog);
-      //delay(LED_DELAY);
-    }
-	}
+      digitalWrite(ledNum, ON);
+      digitalWrite(ledNum-1, OFF);
+      delay(RUNNING_LED_DELAY);
+  }
 }
 
 void RunningLEDLightDown() {
-  for (uint8_t analog=0; analog<256; analog++) {
-    analogWrite(LED_PIN_7, analog);
-  }
+  digitalWrite(LED_PIN_7, ON);
+  delay(RUNNING_LED_DELAY);
 
   for (uint8_t ledNum=6; ledNum>-1; ledNum--) {
-    for (uint8_t analog=0; analog<256; analog++) {
-      analogWrite(ledNum+1, 255-analog);
-      analogWrite(ledNum, analog);
-      //delay(LED_DELAY);
-    }
-	}
+      digitalWrite(ledNum, ON);
+      digitalWrite(ledNum+1, OFF);
+      delay(RUNNING_LED_DELAY);
+  }
 }
 
 void StartAnimation() {

@@ -8,6 +8,7 @@
 
 const uint8_t BUTTON_DELAY = 250;
 const uint8_t LED_DELAY = 250;
+const uint8_t RUNNING_LED_DELAY = 75;
 const uint8_t BOUNCE_DELAY = 50;
 const uint16_t IGNITER_DELAY = 500;
 
