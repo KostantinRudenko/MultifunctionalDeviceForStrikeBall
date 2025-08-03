@@ -14,8 +14,7 @@ void AllLEDS(uint8_t state);
 void LightLEDSOneByOne();
 void StartAnimation();
 void AutostartAnimation();
-void RunningLEDLightUp();
-void RunningLEDLightDown();
+bool RunningLEDLightUpAndCheckingButton();
 
 bool IsPirSensorActive();
 bool IsModeButtonClicked();
@@ -47,26 +46,31 @@ void LightLEDSOneByOne() {
 	}
 }
 
-void RunningLEDLightUp() {
+bool RunningLEDLightUpAndCheckingButton() {
   digitalWrite(LED_PIN_1, ON);
   delay(RUNNING_LED_DELAY);
 
   for (uint8_t ledNum=1; ledNum<LED_AMOUNT; ledNum++) {
-      digitalWrite(ledNum, ON);
-      digitalWrite(ledNum-1, OFF);
-      delay(RUNNING_LED_DELAY);
+    digitalWrite(ledNum, ON);
+    digitalWrite(ledNum-1, OFF);
+    delay(RUNNING_LED_DELAY);
+    if (IsModeButtonClicked()) {
+      return true;
+    }
   }
-}
 
-void RunningLEDLightDown() {
   digitalWrite(LED_PIN_7, ON);
   delay(RUNNING_LED_DELAY);
 
   for (uint8_t ledNum=6; ledNum>-1; ledNum--) {
-      digitalWrite(ledNum, ON);
-      digitalWrite(ledNum+1, OFF);
-      delay(RUNNING_LED_DELAY);
+    digitalWrite(ledNum, ON);
+    digitalWrite(ledNum+1, OFF);
+    delay(RUNNING_LED_DELAY);
+    if (IsModeButtonClicked()) {
+      return true;
+    }
   }
+  return false;
 }
 
 void StartAnimation() {

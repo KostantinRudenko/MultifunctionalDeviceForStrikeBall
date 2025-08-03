@@ -52,15 +52,12 @@ void loop() {
   switch (state) {
     
     case 0:
-      RunningLEDLightUp();
-      if (IsModeButtonClicked()) {
+      if (RunningLEDLightUpAndCheckingButton()) {
         state = 1;
-      }
-      RunningLEDLightDown();
-      if (IsModeButtonClicked()) {
-        state = 1;
+        break;
       }
       state = 0;
+      break;
 
     case 1: // Выбор режима
       
