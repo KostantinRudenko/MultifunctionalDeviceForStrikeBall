@@ -23,8 +23,8 @@ uint8_t modeLedPin = gMode;
 unsigned long timer = 0;
 
 bool isTimerRunning = false;
-bool isWaitingForActivation = false;
-bool isModeActivated = false;
+//bool isWaitingForActivation = false;
+//bool isModeActivated = false;
 
 #pragma endregion Variables
 
@@ -68,7 +68,7 @@ void loop() {
         modeLedPin = gMode;
         timer = millis() + CONFIRM_TIME;
         isTimerRunning = true;
-        isWaitingForActivation = false;
+        //isWaitingForActivation = false;
       }
       AllLEDS(OFF);
       digitalWrite(modeLedPin, ON);
@@ -77,10 +77,10 @@ void loop() {
 
     case 2: // Ожидание таймера на подтверждение режима
 
-      if (isTimerRunning && !isModeActivated) {
+      if (isTimerRunning /*&& !isModeActivated*/) {
         if (millis() > timer){
         isTimerRunning = false;
-        isWaitingForActivation = true;
+        //isWaitingForActivation = true;
         
         BlinkOneLED(modeLedPin);
         delay(LED_DELAY);
@@ -91,13 +91,14 @@ void loop() {
         }
       }
       state = 1;
+      break;
 
     case 3: // ожидание запуска режима
 
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
-        isWaitingForActivation = false;
+        //isWaitingForActivation = false;
         AutostartAnimation();
-        isModeActivated = true;
+        //isModeActivated = true;
         state = 4;
         break;
       }

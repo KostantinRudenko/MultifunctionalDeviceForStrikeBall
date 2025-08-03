@@ -87,7 +87,7 @@ void AutostartAnimation(){
   unsigned int delay_time = (LED_AMOUNT*LED_DELAY + AUTOSTART_TIME)/LED_AMOUNT;
   AllLEDS(ON);
   for (short ledNum=6; ledNum>=0; ledNum--){
-		digitalWrite(ledNum, ON);
+		digitalWrite(ledNum, OFF);
 		delay(delay_time);
 	}
   AllLEDS(OFF);
