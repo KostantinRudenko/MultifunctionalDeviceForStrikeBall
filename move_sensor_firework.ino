@@ -23,8 +23,6 @@ uint8_t modeLedPin = gMode;
 unsigned long timer = 0;
 
 bool isTimerRunning = false;
-//bool isWaitingForActivation = false;
-//bool isModeActivated = false;
 
 #pragma endregion Variables
 
@@ -43,7 +41,7 @@ void setup() {
   pinMode(IGNITER_PIN, OUTPUT);
 
   pinMode(MODE_BTN, INPUT_PULLUP);
-  pinMode(TIMER_BTN, INPUT_PULLUP);
+  pinMode(CONFIRM_BTN, INPUT_PULLUP);
 
   StartAnimation();
 }
@@ -62,13 +60,11 @@ void loop() {
       break;
 
     case 1: // Выбор режима
-      
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         gMode = (gMode+1) % MODES_AMOUNT;
         modeLedPin = gMode;
-        timer = millis() + CONFIRM_TIME;
+        //timer = millis() + CONFIRM_TIME;
         isTimerRunning = true;
-        //isWaitingForActivation = false;
       }
       AllLEDS(OFF);
       digitalWrite(modeLedPin, ON);
@@ -76,25 +72,19 @@ void loop() {
       state = 2;
 
     case 2: // Ожидание таймера на подтверждение режима
-
-      if (isTimerRunning /*&& !isModeActivated*/) {
-        if (millis() > timer){
-        isTimerRunning = false;
-        //isWaitingForActivation = true;
-        
+      if (digitalRead(CONFIRM_BTN) == BUTTON_CLICKED) {
         BlinkOneLED(modeLedPin);
         delay(LED_DELAY);
         digitalWrite(modeLedPin, OFF);
         
         state = 3;
         break;
-        }
       }
+
       state = 1;
       break;
 
     case 3: // ожидание запуска режима
-
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         //isWaitingForActivation = false;
         AutostartAnimation();
@@ -107,10 +97,8 @@ void loop() {
       break;
   
     case 4:
-
       switch (gMode) {
-
-        case 1:
+        case 0:
           if (BasicMode()) {
             delay(SIREN_WORK_TIME);
             digitalWrite(SIREN_PIN, OFF);
@@ -118,20 +106,24 @@ void loop() {
             state = 0;
           }
           break;
-        case 2:
+        
+        case 1:
           OnlySirenMode();
           break;
-        case 3:
+        
+        case 2:
           if (OnlyIgniterMode()) {
             state = 0;
           }
           break;
-        case 4:
+
+        case 3:
           if (!isTimerRunning){
             timer = millis();
+            isTimerRunning = true;
           }
           TimerMode(timer, isTimerRunning);
           break;
-      }
+    }
   }
 }

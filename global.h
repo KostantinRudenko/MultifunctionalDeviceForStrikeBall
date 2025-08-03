@@ -33,7 +33,7 @@ const uint8_t SIREN_PIN = 7;
 const uint8_t IGNITER_PIN = 10;
 
 const uint8_t MODE_BTN = 20;
-const uint8_t TIMER_BTN = 21;
+const uint8_t CONFIRM_BTN = 21;
 
 const unsigned int CONFIRM_TIME = 5000;
 const unsigned int AUTOSTART_TIME = 5000;

@@ -118,10 +118,12 @@ bool BasicMode() {
 void OnlySirenMode() {
   if (IsPirSensorActive()) {
     digitalWrite(SIREN_PIN, ON);
-  }
-  else {
+    delay(SIREN_WORK_TIME);
     digitalWrite(SIREN_PIN, OFF);
   }
+  //else {
+  //  digitalWrite(SIREN_PIN, OFF);
+  //}
   delay(BOUNCE_DELAY);
 }
 
@@ -129,11 +131,12 @@ bool OnlyIgniterMode() {
   if (IsPirSensorActive()) {
     digitalWrite(IGNITER_PIN, ON);
     delay(IGNITER_DELAY);
+    digitalWrite(IGNITER_PIN, OFF);
     return true;
   }
-  else {
-    digitalWrite(IGNITER_PIN, OFF);
-  }
+  //else {
+  //  digitalWrite(IGNITER_PIN, OFF);
+  //}
   delay(BOUNCE_DELAY);
   return false;
 }
