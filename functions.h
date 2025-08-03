@@ -15,9 +15,9 @@ void LightLEDSOneByOne();
 void StartAnimation();
 void AutostartAnimation();
 
-void BasicMode();
+bool BasicMode();
 void OnlySirenMode();
-void OnlyIgniterMode();
+bool OnlyIgniterMode();
 void TimerMode(const unsigned int& timer, bool& isTimerRunning);
 
 #pragma endregion Functions
@@ -66,17 +66,19 @@ bool IsPirSensorActive() {
   return digitalRead(PIR_SENSOR_PIN) == 1;
 }
 
-void BasicMode() {
+bool BasicMode() {
   if (IsPirSensorActive()) {
     digitalWrite(SIREN_PIN, ON);
     digitalWrite(IGNITER_PIN, ON);
     delay(IGNITER_DELAY);
+    return true;
   }
   else {
     digitalWrite(SIREN_PIN, OFF);
     digitalWrite(IGNITER_PIN, OFF);
   }
   delay(BOUNCE_DELAY);
+  return false;
 }
 
 void OnlySirenMode() {
@@ -89,15 +91,17 @@ void OnlySirenMode() {
   delay(BOUNCE_DELAY);
 }
 
-void OnlyIgniterMode() {
+bool OnlyIgniterMode() {
   if (IsPirSensorActive()) {
     digitalWrite(IGNITER_PIN, ON);
     delay(IGNITER_DELAY);
+    return true;
   }
   else {
     digitalWrite(IGNITER_PIN, OFF);
   }
-  delay(BOUNCE_DELAY); 
+  delay(BOUNCE_DELAY);
+  return false;
 }
 
 void TimerMode(const unsigned int& timer, bool& isTimerRunning) {

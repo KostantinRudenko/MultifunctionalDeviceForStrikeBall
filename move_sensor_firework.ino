@@ -51,7 +51,7 @@ void setup() {
 void loop() {
   switch (state) {
     
-    case 0:
+    case 0: // Выбор режима
       
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         gMode = (gMode+1) % MODES_AMOUNT;
@@ -65,7 +65,7 @@ void loop() {
       delay(BUTTON_DELAY);
       state = 1;
 
-    case 1:
+    case 1: // Ожидание таймера на подтверждение режима
 
       if (isTimerRunning && !isModeActivated) {
         if (millis() > timer){
@@ -82,7 +82,7 @@ void loop() {
       }
       state = 0;
 
-    case 2:
+    case 2: // ожидание запуска режима
 
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         isWaitingForActivation = false;
@@ -99,13 +99,17 @@ void loop() {
       switch (gMode) {
 
         case 1:
-          BasicMode();
+          if (BasicMode()) {
+            state = 0;
+          }
           break;
         case 2:
           OnlySirenMode();
           break;
         case 3:
-          OnlyIgniterMode();
+          if (OnlyIgniterMode()) {
+            state = 0;
+          }
           break;
         case 4:
           if (!isTimerRunning){
