@@ -9,10 +9,10 @@
 #pragma region ______________________________ Variables
 
 /* ---------- Режими ----------
- * 1 - Базовый режим (сирена + зажигатель)
- * 2 - Режим только сирены
- * 3 - Режим только зажигателя
- * 4 - Таймер с зажигателем
+ * 0 - Базовый режим (сирена + зажигатель)
+ * 1 - Режим только сирены
+ * 2 - Режим только зажигателя
+ * 3 - Таймер с зажигателем
  * Номер светодиода соответствует номеру режима
  * ---------------------------- */
 
@@ -41,7 +41,7 @@ void setup() {
   pinMode(SIREN_PIN, OUTPUT);
   pinMode(IGNITER_PIN, OUTPUT);
 
-  pinMode(MODE_BTN, INPUT_PULLUP);
+  pinMode(CHOOSE_BTN, INPUT_PULLUP);
   pinMode(CONFIRM_BTN, INPUT_PULLUP);
 
   StartAnimation();
@@ -50,7 +50,7 @@ void setup() {
 void loop() {
   switch (state) {
     case 0: // Ожидание нажатия кнопки
-      if (RunningLEDLightUpAndCheckingButton()) {
+      if (RunningLEDLightAndCheckingButton()) {
         state = 1;
         AllLEDS(OFF);
         delay(PAUSE_DELAY);
@@ -60,7 +60,7 @@ void loop() {
       break;
 
     case 1: // Выбор режима
-      if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
+      if (digitalRead(CHOOSE_BTN) == BUTTON_CLICKED) {
         gMode = (gMode+1) % MODES_AMOUNT;
         modeLedPin = gMode;
       }
@@ -83,6 +83,8 @@ void loop() {
       break;
 
     case 3: // запуск режима
+      if (gMode == 3) { SelectTimeForTimer(timerSelectedPosition); }
+      
       AutostartAnimation();
       state = 4;
       break;
@@ -110,7 +112,6 @@ void loop() {
 
         case 3:
           if (!isTimerRunning) {
-            SelectTimeForTimer(timerSelectedPosition);
             timer = millis() + timerSelectedPosition * TEN_MINUTE_PERIOD;
             isTimerRunning = true;
           }
