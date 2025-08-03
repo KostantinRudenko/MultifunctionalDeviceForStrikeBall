@@ -14,10 +14,13 @@ const uint16_t IGNITER_DELAY = 500;
 const uint16_t PAUSE_DELAY = 500;
 const uint16_t SIREN_WORK_TIME = 10000;
 
+const long TEN_MINUTE_PERIOD = 600000;
+
 const uint8_t BUTTON_CLICKED = 0;
 
 const uint8_t LED_AMOUNT = 7;
 const uint8_t MODES_AMOUNT = 4;
+const uint8_t TIMER_PERIODS_AMOUNT = 3;
 
 const uint8_t LED_PIN_1 = 0;
 const uint8_t LED_PIN_2 = 1;

@@ -15,6 +15,7 @@ void LightLEDSOneByOne();
 void StartAnimation();
 void AutostartAnimation();
 bool RunningLEDLightUpAndCheckingButton();
+void SelectTimeForTimer(uint8_t& timerSelectedPosition);
 
 bool IsPirSensorActive();
 bool IsModeButtonClicked();
@@ -93,6 +94,18 @@ void AutostartAnimation(){
   AllLEDS(OFF);
 }
 
+void SelectTimeForTimer(uint8_t& timerSelectedPosition) {
+  if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
+    timerSelectedPosition = (timerSelectedPosition+1) % TIMER_PERIODS_AMOUNT;
+  }
+  else if (digitalRead(CONFIRM_BTN) == BUTTON_CLICKED) {
+    return;
+  }
+  AllLEDS(OFF);
+  digitalWrite(timerSelectedPosition, ON);
+  delay(BUTTON_DELAY);
+}
+
 bool IsPirSensorActive() {
   return digitalRead(PIR_SENSOR_PIN) == 1;
 }
@@ -145,6 +158,7 @@ void TimerMode(const unsigned int& timer, bool& isTimerRunning) {
   if (millis() > timer){
     digitalWrite(IGNITER_PIN, ON);
     delay(IGNITER_DELAY);
+    digitalWrite(IGNITER_PIN, OFF);
     isTimerRunning = false;
   }
 }

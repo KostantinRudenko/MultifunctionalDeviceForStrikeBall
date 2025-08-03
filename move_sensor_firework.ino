@@ -12,13 +12,14 @@
  * 1 - Базовый режим (сирена + зажигатель)
  * 2 - Режим только сирены
  * 3 - Режим только зажигателя
- * 4 - Таймер с зажигателям
- * Номер светодиода соответствует номеру режима modeLedPin=gMode
+ * 4 - Таймер с зажигателем
+ * Номер светодиода соответствует номеру режима
  * ---------------------------- */
 
 uint8_t state = 0;
 uint8_t gMode = 0;
-uint8_t modeLedPin = gMode;
+uint8_t modeLedPin = 0;
+uint8_t timerSelectedPosition = 0;
 
 unsigned long timer = 0;
 
@@ -62,7 +63,6 @@ void loop() {
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         gMode = (gMode+1) % MODES_AMOUNT;
         modeLedPin = gMode;
-        isTimerRunning = true;
       }
       AllLEDS(OFF);
       digitalWrite(modeLedPin, ON);
@@ -109,8 +109,9 @@ void loop() {
           break;
 
         case 3:
-          if (!isTimerRunning){
-            timer = millis();
+          if (!isTimerRunning) {
+            SelectTimeForTimer(timerSelectedPosition);
+            timer = millis() + timerSelectedPosition * TEN_MINUTE_PERIOD;
             isTimerRunning = true;
           }
           TimerMode(timer, isTimerRunning);
