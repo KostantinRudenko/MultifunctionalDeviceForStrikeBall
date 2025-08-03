@@ -29,13 +29,13 @@ bool isModeActivated = false;
 #pragma endregion Variables
 
 void setup() {
-  pinMode(LED_1_RED_PIN, OUTPUT);
-  pinMode(LED_2_RED_PIN, OUTPUT);
-  pinMode(LED_3_RED_PIN, OUTPUT);
-  pinMode(LED_4_RED_PIN, OUTPUT);
-  pinMode(LED_5_RED_PIN, OUTPUT);
-  pinMode(LED_6_GREEN_PIN, OUTPUT);
-  pinMode(LED_7_GREEN_PIN, OUTPUT);
+  pinMode(LED_PIN_1, OUTPUT);
+  pinMode(LED_PIN_2, OUTPUT);
+  pinMode(LED_PIN_3, OUTPUT);
+  pinMode(LED_PIN_4, OUTPUT);
+  pinMode(LED_PIN_5, OUTPUT);
+  pinMode(LED_PIN_6, OUTPUT);
+  pinMode(LED_PIN_7, OUTPUT);
 
   pinMode(PIR_SENSOR_PIN, INPUT);
 
@@ -51,7 +51,13 @@ void setup() {
 void loop() {
   switch (state) {
     
-    case 0: // Выбор режима
+    case 0:
+      RunningLEDLightUp();
+      if (IsModeButtonClicked()) { state = 1; }
+      RunningLEDLightDown();
+      if (IsModeButtonClicked()) { state = 1; }
+
+    case 1: // Выбор режима
       
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         gMode = (gMode+1) % MODES_AMOUNT;
@@ -63,9 +69,9 @@ void loop() {
       AllLEDS(OFF);
       digitalWrite(modeLedPin, ON);
       delay(BUTTON_DELAY);
-      state = 1;
+      state = 2;
 
-    case 1: // Ожидание таймера на подтверждение режима
+    case 2: // Ожидание таймера на подтверждение режима
 
       if (isTimerRunning && !isModeActivated) {
         if (millis() > timer){
@@ -76,25 +82,26 @@ void loop() {
         delay(LED_DELAY);
         digitalWrite(modeLedPin, OFF);
         
-        state = 2;
+        state = 3;
         break;
         }
       }
       state = 0;
 
-    case 2: // ожидание запуска режима
+    case 3: // ожидание запуска режима
 
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         isWaitingForActivation = false;
         AutostartAnimation();
         isModeActivated = true;
-        state = 3;
+        state = 4;
         break;
       }
+      BlinkOneLED(modeLedPin);
       delay(BUTTON_DELAY);
       break;
   
-    case 3:
+    case 4:
 
       switch (gMode) {
 

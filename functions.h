@@ -14,6 +14,11 @@ void AllLEDS(uint8_t state);
 void LightLEDSOneByOne();
 void StartAnimation();
 void AutostartAnimation();
+void RunningLEDLightUp();
+void RunningLEDLightDown();
+
+bool IsPirSensorActive();
+bool IsModeButtonClicked();
 
 bool BasicMode();
 void OnlySirenMode();
@@ -29,20 +34,48 @@ void BlinkOneLED(uint8_t ledPin) {
   digitalWrite(ledPin, last_state);
 }
 
-void AllLEDS(uint8_t state){
+void AllLEDS(uint8_t state) {
 	for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
 		digitalWrite(ledNum, state);
 	}
 }
 
-void LightLEDSOneByOne(){
+void LightLEDSOneByOne() {
 	for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
 		digitalWrite(ledNum, ON);
 		delay(LED_DELAY);
 	}
 }
 
-void StartAnimation(){
+void RunningLEDLightUp() {
+  for (uint8_t analog=0; analog<256; analog++) {
+    analogWrite(LED_PIN_1, analog);
+  }
+
+  for (uint8_t ledNum=1; ledNum<LED_AMOUNT; ledNum++) {
+    for (uint8_t analog=0; analog<256; analog++) {
+      analogWrite(ledNum-1, 255-analog);
+      analogWrite(ledNum, analog);
+      //delay(LED_DELAY);
+    }
+	}
+}
+
+void RunningLEDLightDown() {
+  for (uint8_t analog=0; analog<256; analog++) {
+    analogWrite(LED_PIN_7, analog);
+  }
+
+  for (uint8_t ledNum=6; ledNum>-1; ledNum--) {
+    for (uint8_t analog=0; analog<256; analog++) {
+      analogWrite(ledNum+1, 255-analog);
+      analogWrite(ledNum, analog);
+      //delay(LED_DELAY);
+    }
+	}
+}
+
+void StartAnimation() {
 	LightLEDSOneByOne();
 	delay(LED_DELAY);
 	AllLEDS(OFF);
@@ -64,6 +97,10 @@ void AutostartAnimation(){
 
 bool IsPirSensorActive() {
   return digitalRead(PIR_SENSOR_PIN) == 1;
+}
+
+bool IsModeButtonClicked() {
+  return digitalRead(MODE_BTN) == 1;
 }
 
 bool BasicMode() {
