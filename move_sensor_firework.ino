@@ -53,9 +53,14 @@ void loop() {
     
     case 0:
       RunningLEDLightUp();
-      if (IsModeButtonClicked()) { state = 1; }
+      if (IsModeButtonClicked()) {
+        state = 1;
+      }
       RunningLEDLightDown();
-      if (IsModeButtonClicked()) { state = 1; }
+      if (IsModeButtonClicked()) {
+        state = 1;
+      }
+      state = 0;
 
     case 1: // Выбор режима
       

@@ -94,7 +94,7 @@ bool IsPirSensorActive() {
 }
 
 bool IsModeButtonClicked() {
-  return digitalRead(MODE_BTN) == 1;
+  return digitalRead(MODE_BTN) == BUTTON_CLICKED;
 }
 
 bool BasicMode() {
