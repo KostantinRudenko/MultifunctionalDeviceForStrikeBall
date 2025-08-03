@@ -48,8 +48,7 @@ void setup() {
 
 void loop() {
   switch (state) {
-    
-    case 0:
+    case 0: // Ожидание нажатия кнопки
       if (RunningLEDLightUpAndCheckingButton()) {
         state = 1;
         AllLEDS(OFF);
@@ -63,7 +62,6 @@ void loop() {
       if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
         gMode = (gMode+1) % MODES_AMOUNT;
         modeLedPin = gMode;
-        //timer = millis() + CONFIRM_TIME;
         isTimerRunning = true;
       }
       AllLEDS(OFF);
@@ -71,7 +69,7 @@ void loop() {
       delay(BUTTON_DELAY);
       state = 2;
 
-    case 2: // Ожидание таймера на подтверждение режима
+    case 2: // Ожидание подтверждения режима
       if (digitalRead(CONFIRM_BTN) == BUTTON_CLICKED) {
         BlinkOneLED(modeLedPin);
         delay(LED_DELAY);
@@ -84,19 +82,12 @@ void loop() {
       state = 1;
       break;
 
-    case 3: // ожидание запуска режима
-      if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
-        //isWaitingForActivation = false;
-        AutostartAnimation();
-        //isModeActivated = true;
-        state = 4;
-        break;
-      }
-      BlinkOneLED(modeLedPin);
-      delay(BUTTON_DELAY);
+    case 3: // запуск режима
+      AutostartAnimation();
+      state = 4;
       break;
   
-    case 4:
+    case 4: // Выбор и работа игрового режима
       switch (gMode) {
         case 0:
           if (BasicMode()) {
