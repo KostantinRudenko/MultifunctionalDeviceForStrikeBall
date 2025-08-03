@@ -62,7 +62,7 @@ bool RunningLEDLightUpAndCheckingButton() {
   digitalWrite(LED_PIN_7, ON);
   delay(RUNNING_LED_DELAY);
 
-  for (uint8_t ledNum=6; ledNum>-1; ledNum--) {
+  for (short ledNum=6; ledNum>=0; ledNum--) {
     digitalWrite(ledNum, ON);
     digitalWrite(ledNum+1, OFF);
     delay(RUNNING_LED_DELAY);
@@ -85,8 +85,8 @@ void StartAnimation() {
 
 void AutostartAnimation(){
   unsigned int delay_time = (LED_AMOUNT*LED_DELAY + AUTOSTART_TIME)/LED_AMOUNT;
-  AllLEDS(OFF);
-  for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
+  AllLEDS(ON);
+  for (short ledNum=6; ledNum>=0; ledNum--){
 		digitalWrite(ledNum, ON);
 		delay(delay_time);
 	}
@@ -109,7 +109,6 @@ bool BasicMode() {
     return true;
   }
   else {
-    digitalWrite(SIREN_PIN, OFF);
     digitalWrite(IGNITER_PIN, OFF);
   }
   delay(BOUNCE_DELAY);

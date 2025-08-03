@@ -54,6 +54,8 @@ void loop() {
     case 0:
       if (RunningLEDLightUpAndCheckingButton()) {
         state = 1;
+        AllLEDS(OFF);
+        delay(PAUSE_DELAY);
         break;
       }
       state = 0;
@@ -88,7 +90,7 @@ void loop() {
         break;
         }
       }
-      state = 0;
+      state = 1;
 
     case 3: // ожидание запуска режима
 
@@ -109,6 +111,9 @@ void loop() {
 
         case 1:
           if (BasicMode()) {
+            delay(SIREN_WORK_TIME);
+            digitalWrite(SIREN_PIN, OFF);
+            digitalWrite(IGNITER_PIN, OFF);
             state = 0;
           }
           break;

@@ -11,6 +11,8 @@ const uint8_t LED_DELAY = 250;
 const uint8_t RUNNING_LED_DELAY = 100;
 const uint8_t BOUNCE_DELAY = 50;
 const uint16_t IGNITER_DELAY = 500;
+const uint16_t PAUSE_DELAY = 500;
+const uint16_t SIREN_WORK_TIME = 10000;
 
 const uint8_t BUTTON_CLICKED = 0;
 
