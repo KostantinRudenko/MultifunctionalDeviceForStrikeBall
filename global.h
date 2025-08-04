@@ -27,7 +27,7 @@ const uint8_t BUTTON_CLICKED = 0;
 // ==============================================
 
 // Константы количества
-const uint8_t LED_AMOUNT = 7;
+const uint8_t LED_AMOUNT = 6;
 const uint8_t MODES_AMOUNT = 4;
 const uint8_t TIMER_PERIODS_AMOUNT = 5;
 // ==============================================
@@ -39,9 +39,9 @@ const uint8_t LED_PIN_3 = 2;
 const uint8_t LED_PIN_4 = 3;
 const uint8_t LED_PIN_5 = 4;
 const uint8_t LED_PIN_6 = 5;
-const uint8_t LED_PIN_7 = 6;
+//const uint8_t LED_PIN_7 = 6;
 
-const uint8_t PIR_SENSOR_PIN = 9;
+const uint8_t PIR_SENSOR_PIN = 6;
 
 const uint8_t SIREN_PIN = 7;
 const uint8_t IGNITER_PIN = 10;
