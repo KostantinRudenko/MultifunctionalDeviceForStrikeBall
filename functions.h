@@ -42,6 +42,14 @@ void BlinkOneLED(uint8_t ledPin) {
   digitalWrite(ledPin, last_state);
 }
 
+void BlinkSomeLEDs(uint8_t ledPinAmount) {
+  for (uint8_t ledPin; ledPin<ledPinAmount; ledPin++) {
+    digitalWrite(ledPin, !digitalRead(ledPin));
+    delay(LED_DELAY);
+    digitalWrite(ledPin, !digitalRead(ledPin));
+  }
+}
+
 void AllLEDS(uint8_t state) {
 	for (uint8_t ledNum=0; ledNum<LED_AMOUNT; ledNum++){
 		digitalWrite(ledNum, state);

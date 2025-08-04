@@ -83,7 +83,10 @@ void loop() {
       break;
 
     case 3: // запуск режима
-      if (gMode == 3) { SelectTimeForTimer(timerSelectedPosition); }
+      if (gMode == 3) {
+        SelectTimeForTimer(timerSelectedPosition);
+        BlinkSomeLEDs(timerSelectedPosition);
+        }
       
       AutostartAnimation();
       state = 4;
