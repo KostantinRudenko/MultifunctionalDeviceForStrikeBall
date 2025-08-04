@@ -23,6 +23,7 @@ uint8_t timerSelectedPosition = 0;
 
 unsigned long timer = 0;
 
+bool isTimerSelectionActivated = false;
 bool isTimerRunning = false;
 
 #pragma endregion Variables
@@ -84,6 +85,14 @@ void loop() {
 
     case 3: // запуск режима
       if (gMode == 3) {
+        if (!isTimerSelectionActivated) {
+          AllLEDS(OFF);
+          delay(LED_DELAY);
+          AllLEDS(ON);
+          delay(LED_DELAY);
+          AllLEDS(OFF);
+          isTimerSelectionActivated = true;
+        }
         if (SelectTimeForTimer(timerSelectedPosition)) {
           state = 4;
         }
@@ -121,6 +130,7 @@ void loop() {
             isTimerRunning = true;
           }
           if (TimerMode(timer, isTimerRunning)) {
+            isTimerSelectionActivated = false;
             state = 0;
             break;
           }

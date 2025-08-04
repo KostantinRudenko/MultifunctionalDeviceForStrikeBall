@@ -13,7 +13,7 @@
 #pragma region ______________________________ Functions
 
 void BlinkOneLED(uint8_t ledPin);
-void BlinkOneLEDWithCustomMilisecondsDelay(uint8_t ledPin, uint16_t& delayTime);
+void BlinkTwoLEDsWithCustomMilisecondsDelay(uint8_t ledPin1, uint8_t ledPin2, const uint16_t& delayTime);
 void AllLEDS(uint8_t state);
 void LightLEDSOneByOne();
 void LightLEDsFromFirstTo(uint8_t& lastLedPin);
@@ -21,7 +21,7 @@ void StartAnimation();
 void AutostartAnimation();
 bool RunningLEDLightAndCheckingButton();
 bool SelectTimeForTimer(uint8_t& timerSelectedPosition);
-void UpdateLedsForTimerMode(unsigned int& timer, uint8_t& timerSelectedPosition);
+void UpdateLedsForTimerMode(const unsigned long& timer);
 
 bool IsPirSensorActive();
 bool IsChooseButtonClicked();
@@ -45,12 +45,15 @@ void BlinkOneLED(uint8_t ledPin) {
   digitalWrite(ledPin, last_state);
 }
 
-void BlinkOneLEDWithCustomMilisecondsDelay(uint8_t ledPin, const uint16_t& delayTime) {
-  uint8_t last_state = digitalRead(ledPin);
+void BlinkTwoLEDsWithCustomMilisecondsDelay(uint8_t ledPin1, uint8_t ledPin2, const uint16_t& delayTime) {
+  uint8_t last_state1 = digitalRead(ledPin1);
+  uint8_t last_state2 = digitalRead(ledPin2);
   delay(delayTime);
-  digitalWrite(ledPin, !last_state);
+  digitalWrite(ledPin1, !last_state1);
+  digitalWrite(ledPin2, !last_state2);
   delay(delayTime);
-  digitalWrite(ledPin, last_state);
+  digitalWrite(ledPin1, last_state1);
+  digitalWrite(ledPin2, last_state2);
 }
 
 void BlinkSomeLEDs(uint8_t ledPinAmount) {
@@ -140,11 +143,11 @@ bool SelectTimeForTimer(uint8_t& timerSelectedPosition) {
   return false;
 }
 
-void UpdateLedsForTimerMode(const unsigned int& timer, uint8_t& timerSelectedPosition) {
+void UpdateLedsForTimerMode(const unsigned long& timer, const uint8_t& timerSelectedPosition) {
   AllLEDS(OFF);
-  uint8_t lastTimerLeftTimeLed = map(timer, 0, timer, 0, timerSelectedPosition);
-  LightLEDsFromFirstTo(lastTimerLeftTimeLed);
-  BlinkOneLEDWithCustomMilisecondsDelay(lastTimerLeftTimeLed, ONE_SECOND_PERIOD);
+  uint8_t timerLedPinsLeft = map(millis(), 0, timer, 0, timerSelectedPosition);
+  LightLEDsFromFirstTo(timerLedPinsLeft);
+  BlinkTwoLEDsWithCustomMilisecondsDelay(LED_PIN_6, LED_PIN_7, ONE_SECOND_PERIOD);
 }
 
 #pragma endregion ExecutingFunctions

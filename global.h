@@ -17,7 +17,7 @@ const uint16_t PAUSE_DELAY = 500;
 const uint16_t SIREN_WORK_TIME = 10000;
 
 const uint16_t ONE_SECOND_PERIOD = 1000;
-const long TEN_MINUTE_PERIOD = 600000;
+const long TEN_MINUTE_PERIOD = 5000; //600000;
 
 const unsigned int AUTOSTART_TIME = 5000;
 // ==============================================
