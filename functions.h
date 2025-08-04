@@ -21,6 +21,7 @@ void StartAnimation();
 void AutostartAnimation();
 bool RunningLEDLightAndCheckingButton();
 bool SelectTimeForTimer(uint8_t& timerSelectedPosition);
+void UpdateLedsForTimerMode(unsigned int& timer, uint8_t& timerSelectedPosition);
 
 bool IsPirSensorActive();
 bool IsChooseButtonClicked();
@@ -137,6 +138,13 @@ bool SelectTimeForTimer(uint8_t& timerSelectedPosition) {
   LightLEDsFromFirstTo(timerSelectedPosition);
   delay(BUTTON_DELAY);
   return false;
+}
+
+void UpdateLedsForTimerMode(const unsigned int& timer, uint8_t& timerSelectedPosition) {
+  AllLEDS(OFF);
+  uint8_t lastTimerLeftTimeLed = map(timer, 0, timer, 0, timerSelectedPosition);
+  LightLEDsFromFirstTo(lastTimerLeftTimeLed);
+  BlinkOneLEDWithCustomMilisecondsDelay(lastTimerLeftTimeLed, ONE_SECOND_PERIOD);
 }
 
 #pragma endregion ExecutingFunctions

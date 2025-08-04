@@ -124,9 +124,7 @@ void loop() {
             state = 0;
             break;
           }
-          AllLEDS(OFF);
-          LightLEDsFromFirstTo(timerSelectedPosition);
-          BlinkOneLEDWithCustomMilisecondsDelay(timerSelectedPosition, ONE_SECOND_PERIOD);
+          UpdateLedsForTimerMode(timer, timerSelectedPosition);
           break;
     }
   }
