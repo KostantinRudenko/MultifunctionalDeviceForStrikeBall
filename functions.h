@@ -13,6 +13,7 @@
 #pragma region ______________________________ Functions
 
 void BlinkOneLED(uint8_t ledPin);
+void BlinkOneLEDWithCustomMilisecondsDelay(uint8_t ledPin, uint16_t& delayTime);
 void AllLEDS(uint8_t state);
 void LightLEDSOneByOne();
 void LightLEDsFromFirstTo(uint8_t& lastLedPin);
@@ -27,7 +28,7 @@ bool IsChooseButtonClicked();
 bool BasicMode();
 void OnlySirenMode();
 bool OnlyIgniterMode();
-void TimerMode(const unsigned int& timer, bool& isTimerRunning);
+bool TimerMode(const unsigned int& timer, bool& isTimerRunning);
 
 #pragma endregion Functions
 
@@ -40,6 +41,14 @@ void BlinkOneLED(uint8_t ledPin) {
   uint8_t last_state = digitalRead(ledPin);
   digitalWrite(ledPin, !last_state);
   delay(LED_DELAY);
+  digitalWrite(ledPin, last_state);
+}
+
+void BlinkOneLEDWithCustomMilisecondsDelay(uint8_t ledPin, const uint16_t& delayTime) {
+  uint8_t last_state = digitalRead(ledPin);
+  delay(delayTime);
+  digitalWrite(ledPin, !last_state);
+  delay(delayTime);
   digitalWrite(ledPin, last_state);
 }
 
@@ -186,13 +195,15 @@ bool OnlyIgniterMode() {
   return false;
 }
 
-void TimerMode(const unsigned int& timer, bool& isTimerRunning) {
+bool TimerMode(const unsigned int& timer, bool& isTimerRunning) {
   if (millis() > timer){
     digitalWrite(IGNITER_PIN, ON);
     delay(IGNITER_DELAY);
     digitalWrite(IGNITER_PIN, OFF);
     isTimerRunning = false;
+    return true;
   }
+  return false;
 }
 
 #pragma endregion ModeFunctions

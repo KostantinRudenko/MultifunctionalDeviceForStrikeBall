@@ -120,7 +120,13 @@ void loop() {
             timer = millis() + timerSelectedPosition * TEN_MINUTE_PERIOD;
             isTimerRunning = true;
           }
-          TimerMode(timer, isTimerRunning);
+          if (TimerMode(timer, isTimerRunning)) {
+            state = 0;
+            break;
+          }
+          AllLEDS(OFF);
+          LightLEDsFromFirstTo(timerSelectedPosition);
+          BlinkOneLEDWithCustomMilisecondsDelay(timerSelectedPosition, ONE_SECOND_PERIOD);
           break;
     }
   }
