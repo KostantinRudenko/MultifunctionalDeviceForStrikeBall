@@ -120,13 +120,12 @@ bool RunningLEDLightAndCheckingButton() {
 bool SelectTimeForTimer(uint8_t& timerSelectedPosition) {
   if (digitalRead(CHOOSE_BTN) == BUTTON_CLICKED) {
     timerSelectedPosition = (timerSelectedPosition+1) % TIMER_PERIODS_AMOUNT;
-    LightLEDsFromFirstTo(timerSelectedPosition);
   }
   else if (digitalRead(CONFIRM_BTN) == BUTTON_CLICKED) {
     return true;
   }
   AllLEDS(OFF);
-  digitalWrite(timerSelectedPosition, ON);
+  LightLEDsFromFirstTo(timerSelectedPosition);
   delay(BUTTON_DELAY);
   return false;
 }

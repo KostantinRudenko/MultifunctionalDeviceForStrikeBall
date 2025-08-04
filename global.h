@@ -7,7 +7,7 @@
 #define OFF 0
 
 // Константы времени
-const uint8_t BUTTON_DELAY = 250;
+const uint8_t BUTTON_DELAY = 150;
 const uint8_t LED_DELAY = 250;
 const uint8_t RUNNING_LED_DELAY = 100;
 const uint8_t BOUNCE_DELAY = 50;
