@@ -15,10 +15,11 @@
 void BlinkOneLED(uint8_t ledPin);
 void AllLEDS(uint8_t state);
 void LightLEDSOneByOne();
+void LightLEDsFromFirstTo(uint8_t& lastLedPin);
 void StartAnimation();
 void AutostartAnimation();
 bool RunningLEDLightAndCheckingButton();
-void SelectTimeForTimer(uint8_t& timerSelectedPosition);
+bool SelectTimeForTimer(uint8_t& timerSelectedPosition);
 
 bool IsPirSensorActive();
 bool IsChooseButtonClicked();
@@ -61,6 +62,12 @@ void LightLEDSOneByOne() {
 		digitalWrite(ledNum, ON);
 		delay(LED_DELAY);
 	}
+}
+
+void LightLEDsFromFirstTo(uint8_t& lastLedPin) {
+  for (uint8_t ledPin=0; ledPin<=lastLedPin; ledPin++) {
+    digitalWrite(ledPin, ON);
+  }
 }
 
 void StartAnimation() {
@@ -110,16 +117,18 @@ bool RunningLEDLightAndCheckingButton() {
   return false;
 }
 
-void SelectTimeForTimer(uint8_t& timerSelectedPosition) {
+bool SelectTimeForTimer(uint8_t& timerSelectedPosition) {
   if (digitalRead(CHOOSE_BTN) == BUTTON_CLICKED) {
     timerSelectedPosition = (timerSelectedPosition+1) % TIMER_PERIODS_AMOUNT;
+    LightLEDsFromFirstTo(timerSelectedPosition);
   }
   else if (digitalRead(CONFIRM_BTN) == BUTTON_CLICKED) {
-    return;
+    return true;
   }
   AllLEDS(OFF);
   digitalWrite(timerSelectedPosition, ON);
   delay(BUTTON_DELAY);
+  return false;
 }
 
 #pragma endregion ExecutingFunctions

@@ -27,7 +27,7 @@ const uint8_t BUTTON_CLICKED = 0;
 // Константы количества
 const uint8_t LED_AMOUNT = 7;
 const uint8_t MODES_AMOUNT = 4;
-const uint8_t TIMER_PERIODS_AMOUNT = 3;
+const uint8_t TIMER_PERIODS_AMOUNT = 5;
 // ==============================================
 
 // Константы пинов
