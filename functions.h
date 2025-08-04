@@ -20,7 +20,7 @@ void LightLEDsFromFirstTo(uint8_t& lastLedPin);
 void StartAnimation();
 void AutostartAnimation();
 bool RunningLEDLightAndCheckingButton();
-bool SelectTimeForTimer(uint8_t& timerSelectedPosition);
+bool SelectTimeForTimer(uint8_t& choosenTimer);
 void UpdateLedsForTimerMode(const unsigned long& timer);
 
 bool IsPirSensorActive();
@@ -143,9 +143,9 @@ bool SelectTimeForTimer(uint8_t& timerSelectedPosition) {
   return false;
 }
 
-void UpdateLedsForTimerMode(const unsigned long& timer, const uint8_t& timerSelectedPosition) {
+void UpdateLedsForTimerMode(const unsigned long& timer, const uint8_t& choosenTimer) {
   AllLEDS(OFF);
-  uint8_t timerLedPinsLeft = map(millis(), 0, timer, 0, timerSelectedPosition);
+  uint8_t timerLedPinsLeft = map(millis(), 0, timer, 0, choosenTimer);
   LightLEDsFromFirstTo(timerLedPinsLeft);
   BlinkTwoLEDsWithCustomMilisecondsDelay(LED_PIN_6, LED_PIN_7, ONE_SECOND_PERIOD);
 }
@@ -158,6 +158,7 @@ void UpdateLedsForTimerMode(const unsigned long& timer, const uint8_t& timerSele
 #pragma region ______________________________ StateFunctions
 
 bool IsPirSensorActive() {
+  delay(1000);
   return digitalRead(PIR_SENSOR_PIN) == 1;
 }
 
@@ -209,7 +210,9 @@ bool OnlyIgniterMode() {
 bool TimerMode(const unsigned int& timer, bool& isTimerRunning) {
   if (millis() > timer){
     digitalWrite(IGNITER_PIN, ON);
-    delay(IGNITER_DELAY);
+    digitalWrite(SIREN_PIN, ON);
+    delay(SIREN_WORK_TIME);
+    digitalWrite(SIREN_PIN, OFF);
     digitalWrite(IGNITER_PIN, OFF);
     isTimerRunning = false;
     return true;

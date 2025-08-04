@@ -20,6 +20,7 @@ uint8_t state = 0;
 uint8_t gMode = 0;
 uint8_t modeLedPin = 0;
 uint8_t timerSelectedPosition = 0;
+uint8_t choosenTimer = 0;
 
 unsigned long timer = 0;
 
@@ -94,6 +95,7 @@ void loop() {
           isTimerSelectionActivated = true;
         }
         if (SelectTimeForTimer(timerSelectedPosition)) {
+          choosenTimer = timerSelectedPosition+1;
           state = 4;
         }
         break;
@@ -126,7 +128,7 @@ void loop() {
 
         case 3:
           if (!isTimerRunning) {
-            timer = millis() + timerSelectedPosition * TEN_MINUTE_PERIOD;
+            timer = millis() + choosenTimer * TEN_MINUTE_PERIOD;
             isTimerRunning = true;
           }
           if (TimerMode(timer, isTimerRunning)) {
@@ -134,7 +136,7 @@ void loop() {
             state = 0;
             break;
           }
-          UpdateLedsForTimerMode(timer, timerSelectedPosition);
+          UpdateLedsForTimerMode(timer, choosenTimer);
           break;
     }
   }
