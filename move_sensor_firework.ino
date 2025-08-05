@@ -36,7 +36,6 @@ void setup() {
   pinMode(LED_PIN_4, OUTPUT);
   pinMode(LED_PIN_5, OUTPUT);
   pinMode(LED_PIN_6, OUTPUT);
-  //pinMode(LED_PIN_7, OUTPUT);
 
   pinMode(PIR_SENSOR_PIN, INPUT);
 

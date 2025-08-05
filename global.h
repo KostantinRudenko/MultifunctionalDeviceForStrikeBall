@@ -39,7 +39,6 @@ const uint8_t LED_PIN_3 = 2;
 const uint8_t LED_PIN_4 = 3;
 const uint8_t LED_PIN_5 = 4;
 const uint8_t LED_PIN_6 = 5;
-//const uint8_t LED_PIN_7 = 6;
 
 const uint8_t PIR_SENSOR_PIN = 6;
 
