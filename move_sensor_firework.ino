@@ -8,64 +8,136 @@
 
 #pragma region ______________________________ Variables
 
-//GameMode gMode = NONE;
-int gMode = 0;
+/* ---------- Режими ----------
+ * 0 - Базовый режим (сирена + зажигатель)
+ * 1 - Режим только сирены
+ * 2 - Режим только зажигателя
+ * 3 - Таймер с зажигателем
+ * Номер светодиода соответствует номеру режима
+ * ---------------------------- */
+
+uint8_t state = 0;
+uint8_t gMode = 0;
+uint8_t modeLedPin = 0;
+uint8_t timerSelectedPosition = 0;
+uint8_t choosenTimer = 0;
+
+unsigned long timer = 0;
+
+bool isTimerSelectionActivated = false;
+bool isTimerRunning = false;
+
 #pragma endregion Variables
 
 void setup() {
-  pinMode(LED_1_RED_PIN, OUTPUT);
-  pinMode(LED_2_RED_PIN, OUTPUT);
-  pinMode(LED_3_RED_PIN, OUTPUT);
-  pinMode(LED_4_RED_PIN, OUTPUT);
-  pinMode(LED_5_RED_PIN, OUTPUT);
-  pinMode(LED_6_GREEN_PIN, OUTPUT);
-  pinMode(LED_7_GREEN_PIN, OUTPUT);
+  pinMode(LED_PIN_1, OUTPUT);
+  pinMode(LED_PIN_2, OUTPUT);
+  pinMode(LED_PIN_3, OUTPUT);
+  pinMode(LED_PIN_4, OUTPUT);
+  pinMode(LED_PIN_5, OUTPUT);
+  pinMode(LED_PIN_6, OUTPUT);
+  //pinMode(LED_PIN_7, OUTPUT);
 
   pinMode(PIR_SENSOR_PIN, INPUT);
 
   pinMode(SIREN_PIN, OUTPUT);
   pinMode(IGNITER_PIN, OUTPUT);
 
-  pinMode(MODE_BTN, INPUT_PULLUP);
-  pinMode(TIMER_BTN, INPUT_PULLUP);
-
-  Serial.begin(9600);
-  Serial.println("INITIALIZED");
+  pinMode(CHOOSE_BTN, INPUT_PULLUP);
+  pinMode(CONFIRM_BTN, INPUT_PULLUP);
 
   StartAnimation();
 }
 
 void loop() {
-  if (digitalRead(MODE_BTN) == 0) {
-    //delay(100)
-    //if (digitalRead(MODE_BTN) == 1){
-        Serial.println("Changing...");
-        gMode = (gMode+1) % 5;
-        Serial.print("Mode: ");
-        Serial.println(gMode);
-      //}
+  switch (state) {
+    case 0: // Ожидание нажатия кнопки
+      if (RunningLEDLightAndCheckingButton()) {
+        state = 1;
+        AllLEDS(OFF);
+        delay(PAUSE_DELAY);
+        break;
+      }
+      state = 0;
+      break;
+
+    case 1: // Выбор режима
+      if (digitalRead(CHOOSE_BTN) == BUTTON_CLICKED) {
+        gMode = (gMode+1) % MODES_AMOUNT;
+        modeLedPin = gMode;
+      }
+      AllLEDS(OFF);
+      digitalWrite(modeLedPin, ON);
+      delay(BUTTON_DELAY);
+      state = 2;
+
+    case 2: // Ожидание подтверждения режима
+      if (digitalRead(CONFIRM_BTN) == BUTTON_CLICKED) {
+        BlinkOneLED(modeLedPin);
+        delay(LED_DELAY);
+        digitalWrite(modeLedPin, OFF);
+        
+        state = 3;
+        break;
+      }
+
+      state = 1;
+      break;
+
+    case 3: // запуск режима
+      if (gMode == 3) {
+        if (!isTimerSelectionActivated) {
+          AllLEDS(OFF);
+          delay(LED_DELAY);
+          AllLEDS(ON);
+          delay(LED_DELAY);
+          AllLEDS(OFF);
+          isTimerSelectionActivated = true;
+        }
+        if (SelectTimeForTimer(timerSelectedPosition)) {
+          choosenTimer = timerSelectedPosition+1;
+          state = 4;
+        }
+        break;
+      }
+      
+      AutostartAnimation();
+      state = 4;
+      break;
+  
+    case 4: // Выбор и работа игрового режима
+      switch (gMode) {
+        case 0:
+          if (BasicMode()) {
+            delay(SIREN_WORK_TIME);
+            digitalWrite(SIREN_PIN, OFF);
+            digitalWrite(IGNITER_PIN, OFF);
+            state = 0;
+          }
+          break;
+        
+        case 1:
+          OnlySirenMode();
+          break;
+        
+        case 2:
+          if (OnlyIgniterMode()) {
+            state = 0;
+          }
+          break;
+
+        case 3:
+          if (!isTimerRunning) {
+            timer = millis() + choosenTimer * TEN_MINUTE_PERIOD;
+            isTimerRunning = true;
+          }
+          if (TimerMode(timer, isTimerRunning)) {
+            isTimerSelectionActivated = false;
+            state = 0;
+            break;
+          }
+          UpdateLedsForTimerMode(timer, choosenTimer);
+          break;
+    }
   }
-  switch (gMode) {
-    case 0:
-      Serial.println("NONE");
-      AllLEDS(LED_OFF);
-      digitalWrite(0, 1);
-    case 1:
-      Serial.println("BASE");
-      AllLEDS(LED_OFF);
-      digitalWrite(1, 1);
-    case 2:
-      Serial.println("SIREN_ONLY");
-      AllLEDS(LED_OFF);
-      digitalWrite(2, 1);
-    case 3:
-      Serial.println("IGNITER_ONLY");
-      AllLEDS(LED_OFF);
-      digitalWrite(3, 1);
-    case 4:
-      Serial.println("TIMER");
-      AllLEDS(LED_OFF);
-      digitalWrite(4, 1);
-  }
-  delay(250);
 }
