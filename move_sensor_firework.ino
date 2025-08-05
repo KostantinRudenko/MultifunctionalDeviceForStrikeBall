@@ -9,19 +9,22 @@
 #pragma region ______________________________ Variables
 
 /* ---------- Режими ----------
- * 1 - Базовый режим (сирена + зажигатель)
- * 2 - Режим только сирены
- * 3 - Режим только зажигателя
- * 4 - Таймер с зажигателям
- * Номер светодиода соответствует номеру режима modeLedPin=gMode
+ * 0 - Базовый режим (сирена + зажигатель)
+ * 1 - Режим только сирены
+ * 2 - Режим только зажигателя
+ * 3 - Таймер с зажигателем
+ * Номер светодиода соответствует номеру режима
  * ---------------------------- */
 
 uint8_t state = 0;
 uint8_t gMode = 0;
-uint8_t modeLedPin = gMode;
+uint8_t modeLedPin = 0;
+uint8_t timerSelectedPosition = 0;
+uint8_t choosenTimer = 0;
 
 unsigned long timer = 0;
 
+bool isTimerSelectionActivated = false;
 bool isTimerRunning = false;
 
 #pragma endregion Variables
@@ -33,14 +36,14 @@ void setup() {
   pinMode(LED_PIN_4, OUTPUT);
   pinMode(LED_PIN_5, OUTPUT);
   pinMode(LED_PIN_6, OUTPUT);
-  pinMode(LED_PIN_7, OUTPUT);
+  //pinMode(LED_PIN_7, OUTPUT);
 
   pinMode(PIR_SENSOR_PIN, INPUT);
 
   pinMode(SIREN_PIN, OUTPUT);
   pinMode(IGNITER_PIN, OUTPUT);
 
-  pinMode(MODE_BTN, INPUT_PULLUP);
+  pinMode(CHOOSE_BTN, INPUT_PULLUP);
   pinMode(CONFIRM_BTN, INPUT_PULLUP);
 
   StartAnimation();
@@ -49,7 +52,7 @@ void setup() {
 void loop() {
   switch (state) {
     case 0: // Ожидание нажатия кнопки
-      if (RunningLEDLightUpAndCheckingButton()) {
+      if (RunningLEDLightAndCheckingButton()) {
         state = 1;
         AllLEDS(OFF);
         delay(PAUSE_DELAY);
@@ -59,10 +62,9 @@ void loop() {
       break;
 
     case 1: // Выбор режима
-      if (digitalRead(MODE_BTN) == BUTTON_CLICKED) {
+      if (digitalRead(CHOOSE_BTN) == BUTTON_CLICKED) {
         gMode = (gMode+1) % MODES_AMOUNT;
         modeLedPin = gMode;
-        isTimerRunning = true;
       }
       AllLEDS(OFF);
       digitalWrite(modeLedPin, ON);
@@ -83,6 +85,22 @@ void loop() {
       break;
 
     case 3: // запуск режима
+      if (gMode == 3) {
+        if (!isTimerSelectionActivated) {
+          AllLEDS(OFF);
+          delay(LED_DELAY);
+          AllLEDS(ON);
+          delay(LED_DELAY);
+          AllLEDS(OFF);
+          isTimerSelectionActivated = true;
+        }
+        if (SelectTimeForTimer(timerSelectedPosition)) {
+          choosenTimer = timerSelectedPosition+1;
+          state = 4;
+        }
+        break;
+      }
+      
       AutostartAnimation();
       state = 4;
       break;
@@ -109,11 +127,16 @@ void loop() {
           break;
 
         case 3:
-          if (!isTimerRunning){
-            timer = millis();
+          if (!isTimerRunning) {
+            timer = millis() + choosenTimer * TEN_MINUTE_PERIOD;
             isTimerRunning = true;
           }
-          TimerMode(timer, isTimerRunning);
+          if (TimerMode(timer, isTimerRunning)) {
+            isTimerSelectionActivated = false;
+            state = 0;
+            break;
+          }
+          UpdateLedsForTimerMode(timer, choosenTimer);
           break;
     }
   }
