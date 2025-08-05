@@ -13,7 +13,7 @@
 #pragma region ______________________________ Functions
 
 void BlinkOneLED(uint8_t ledPin);
-void BlinkTwoLEDsWithCustomMilisecondsDelay(uint8_t ledPin1, uint8_t ledPin2, const uint16_t& delayTime);
+void BlinkOneLEDWithCustomMilisecondsDelay(uint8_t ledPin, const uint16_t& delayTime);
 void AllLEDS(uint8_t state);
 void LightLEDSOneByOne();
 void LightLEDsFromFirstTo(uint8_t& lastLedPin);
@@ -45,15 +45,12 @@ void BlinkOneLED(uint8_t ledPin) {
   digitalWrite(ledPin, last_state);
 }
 
-void BlinkTwoLEDsWithCustomMilisecondsDelay(uint8_t ledPin1, uint8_t ledPin2, const uint16_t& delayTime) {
-  uint8_t last_state1 = digitalRead(ledPin1);
-  uint8_t last_state2 = digitalRead(ledPin2);
+void BlinkOneLEDWithCustomMilisecondsDelay(uint8_t ledPin, const uint16_t& delayTime) {
+  uint8_t last_state = digitalRead(ledPin);
   delay(delayTime);
-  digitalWrite(ledPin1, !last_state1);
-  digitalWrite(ledPin2, !last_state2);
+  digitalWrite(ledPin, !last_state);
   delay(delayTime);
-  digitalWrite(ledPin1, last_state1);
-  digitalWrite(ledPin2, last_state2);
+  digitalWrite(ledPin, last_state);
 }
 
 void BlinkSomeLEDs(uint8_t ledPinAmount) {
@@ -116,7 +113,7 @@ bool RunningLEDLightAndCheckingButton() {
     }
   }
 
-  digitalWrite(LED_PIN_7, ON);
+  digitalWrite(LED_PIN_6, ON);
   delay(RUNNING_LED_DELAY);
 
   for (short ledNum=6; ledNum>=0; ledNum--) {
@@ -147,7 +144,7 @@ void UpdateLedsForTimerMode(const unsigned long& timer, const uint8_t& choosenTi
   AllLEDS(OFF);
   uint8_t timerLedPinsLeft = map(millis(), 0, timer, 0, choosenTimer);
   LightLEDsFromFirstTo(timerLedPinsLeft);
-  BlinkTwoLEDsWithCustomMilisecondsDelay(LED_PIN_6, LED_PIN_7, ONE_SECOND_PERIOD);
+  BlinkOneLEDWithCustomMilisecondsDelay(LED_PIN_6, ONE_SECOND_PERIOD);
 }
 
 #pragma endregion ExecutingFunctions
