@@ -26,14 +26,14 @@ const uint8_t LEDS_AMOUNT      = 6;
 // ==============================================
 
 // Structures
-const struct DeviceStates {
+const enum DeviceStates {
 	WAIT_INPUT,
 	MODE_SELECT,
 	MODE_CONFIRM,
 	AUTOSTART,
 	RUNNING
 };
-const struct GameModes {
+const enum GameModes {
 	BASE_MODE,
 	SIREN_ONLY_MODE,
 	IGNITER_ONLY_MODE,
