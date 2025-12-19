@@ -10,7 +10,9 @@
 #pragma region ______________________________ FunctionsDefining
 
 bool IsPirSensorActive();
-bool IsChooseButtonClicked();
+bool IsChooseButtonPressed();
+bool IsConfirmButtonPressed();
+bool IsAnyButtonPressed();
 
 bool BasicMode();
 void OnlySirenMode();
@@ -51,8 +53,16 @@ bool IsPirSensorActive() {
   return digitalRead(PIR_SENSOR_PIN) == ACTIVE;
 }
 
-bool IsChooseButtonClicked() {
+bool IsChooseButtonPressed() {
   return digitalRead(CHOOSE_BTN) == BTN_PRESSED;
+}
+
+bool IsConfirmButtonPressed() {
+  return digitalRead(CONFIRM_BTN) == BTN_PRESSED;
+}
+
+bool IsAnyButtonPressed() {
+	return digitalRead(CHOOSE_BTN) || digitalRead(CONFIRM_BTN);
 }
 
 #pragma endregion StateFunctions
