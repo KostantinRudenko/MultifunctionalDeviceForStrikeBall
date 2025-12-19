@@ -43,7 +43,14 @@ bool millisTimer(uint32_t time, bool reset = false) {
 	}
 	else return false;
 }
-	
+
+void setSirenState(uint8_t state) {
+  digitalWrite(SIREN_PIN, state);
+}
+
+void setIgniterState(uint8_t state) {
+  digitalWrite(IGNITER_PIN, state);
+}
 
 #pragma endregion CommonFunctions
 
