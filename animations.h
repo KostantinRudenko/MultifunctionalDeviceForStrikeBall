@@ -1,21 +1,27 @@
 #ifndef _ANIMATIONS_H_
 #define _ANIMATIONS_H_
 
-#include <cstdint>
-void setLedState(uint8_t& ledNum, const uint8_t& state) {
+void setLedState(uint8_t ledNum, uint8_t state) {
 	digitalWrite(ledNum, state);
 }
 
-void setLedsState(uint8_t& ledsAmount, const uint8_t& state) {
+void setLedsState(uint8_t ledsAmount, uint8_t state) {
 	for (uint8_t i = 0; i < ledsAmount; i++) {
-		digitalWrite(i, state);
+		digitalWrite(LEDS_ARRAY[i], state);
 	}
 }
 
-void stepLedProgressBar() {
+void stepLedProgressBar(bool reset = false) {
 	static uint8_t ledPosition = 0;
-	ledPosition++ > LEDS_AMOUNT ? ledPosition = LEDS_AMOUNT : ledPosition++;
-	digitalWrite(ledPosition, ON);
+	if (reset) {
+		for (uint8_t i = 0; i < LEDS_AMOUNT; i++) digitalWrite(LEDS_ARRAY[i], OFF);
+		ledPosition = 0;
+		return;
+	}
+	if (ledPosition < LEDS_AMOUNT) {
+		ledPosition++;
+		digitalWrite(ledPosition, ON);
+	}
 }
 
 
