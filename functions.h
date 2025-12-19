@@ -7,10 +7,7 @@
 
 #pragma endregion Includes
 
-/*========================================================================
-  ========================================================================*/
-
-#pragma region ______________________________ Functions
+#pragma region ______________________________ FunctionsDefining
 
 bool IsPirSensorActive();
 bool IsChooseButtonClicked();
@@ -20,12 +17,33 @@ void OnlySirenMode();
 bool OnlyIgniterMode();
 bool TimerMode(const unsigned int& timer, bool& isTimerRunning);
 
-#pragma endregion Functions
+#pragma endregion FunctionsDefining
 
-#pragma region ______________________________ ExecutingFunctions
+#pragma region ______________________________ CommonFunctions
 
+bool millisTimer(uint32_t time, bool reset = false) {
+	static uint32_t startTime;
+	static bool isRunning = false;
 
-#pragma endregion ExecutingFunctions
+	if (reset) {
+		isRunning = false;
+		return false;
+	}
+
+	if (!isRunning) {
+		isRunning = true;
+		startTime = millis();
+	}
+
+	if (millis() - startTime > time) {
+		isRunning = false;
+		return true;
+	}
+	else return false;
+}
+	
+
+#pragma endregion CommonFunctions
 
 #pragma region ______________________________ StateFunctions
 
