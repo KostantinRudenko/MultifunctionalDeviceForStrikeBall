@@ -11,17 +11,32 @@ void setLedsState(uint8_t ledsAmount, uint8_t state) {
 	}
 }
 
-void stepLedProgressBar(bool reset = false) {
+bool stepLedProgressBar(bool reset = false, bool isForward = true) {
 	static uint8_t ledPosition = 0;
-	if (reset) {
+	if (reset && isForward) {
 		for (uint8_t i = 0; i < LEDS_AMOUNT; i++) digitalWrite(LEDS_ARRAY[i], OFF);
 		ledPosition = 0;
-		return;
+		return false;
 	}
-	if (ledPosition < LEDS_AMOUNT) {
-		ledPosition++;
-		digitalWrite(ledPosition, ON);
+	else if (reset && !isForward) {
+		for (uint8_t i = 0; i < LEDS_AMOUNT; i++) digitalWrite(LEDS_ARRAY[i], ON);
+		ledPosition = LEDS_AMOUNT-1;
+		return false;
 	}
+	if (isForward) {
+		if (ledPosition < LEDS_AMOUNT) {
+			ledPosition++;
+			digitalWrite(ledPosition, ON);
+		}
+		else return true;
+	} else {
+		if (ledPosition > 0) {
+			ledPosition--;
+			digitalWrite(ledPosition, OFF);
+		}
+		else return true;
+	}
+	return false;
 }
 
 
