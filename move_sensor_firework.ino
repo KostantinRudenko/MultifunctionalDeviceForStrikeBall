@@ -50,10 +50,18 @@ void loop() {
   switch (state) {
     case WAIT_INPUT: // Ожидание нажатия кнопки
       static bool isForward = true;
-      if (stepLedProgressBar(isForward=isForward) {
-          isForward = !isForward;
-          stepLedProgressBar(reset=true,isForward=isForward);
+
+      if (millisTimer(WAITING_ANIMATION_INTERVAL_MS)) {
+        if ( && stepLedProgressBar(false,isForward) {
+            isForward = !isForward;
+            stepLedProgressBar(true,isForward);
         }
+
+        if (IsAnyButtonIsPressed()) {
+          state = MODE_SELECT;
+          setLedsState(LEDS_AMOUNT, OFF);
+        }
+      }
       break;
 
     case 1: // Выбор режима
