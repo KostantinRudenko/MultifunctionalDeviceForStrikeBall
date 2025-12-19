@@ -44,8 +44,6 @@ void setup() {
 
   pinMode(CHOOSE_BTN, INPUT_PULLUP);
   pinMode(CONFIRM_BTN, INPUT_PULLUP);
-
-  StartAnimation();
 }
 
 void loop() {
