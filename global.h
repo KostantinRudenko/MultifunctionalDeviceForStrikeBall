@@ -19,6 +19,7 @@ const uint16_t IGNITER_TIME                    = 3  * 1000;
 
 // Amount constants
 const uint8_t GAMEMODES_AMOUNT = 4;
+const uint8_t LEDS_AMOUNT      = 6;
 // ==============================================
 
 // Structures
