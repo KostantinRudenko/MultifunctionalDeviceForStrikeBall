@@ -2,6 +2,7 @@
 #pragma region ______________________________ Includes
 
 #include "global.h"
+#include "animations.h"
 #include "functions.h"
 
 #pragma endregion Includes
@@ -16,9 +17,8 @@
  * Номер светодиода соответствует номеру режима
  * ---------------------------- */
 
-uint8_t state = 0;
-uint8_t gMode = 0;
-uint8_t modeLedPin = 0;
+uint8_t state = WAIT_INPUT;
+uint8_t gMode = BASE_MODE;
 uint8_t timerSelectedPosition = 0;
 uint8_t choosenTimer = 0;
 
@@ -50,14 +50,12 @@ void setup() {
 
 void loop() {
   switch (state) {
-    case 0: // Ожидание нажатия кнопки
-      if (RunningLEDLightAndCheckingButton()) {
-        state = 1;
-        AllLEDS(OFF);
-        delay(PAUSE_DELAY);
-        break;
-      }
-      state = 0;
+    case WAIT_INPUT: // Ожидание нажатия кнопки
+      static bool isForward = true;
+      if (stepLedProgressBar(isForward=isForward) {
+          isForward = !isForward;
+          stepLedProgressBar(reset=true,isForward=isForward);
+        }
       break;
 
     case 1: // Выбор режима
