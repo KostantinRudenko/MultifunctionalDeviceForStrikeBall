@@ -39,5 +39,29 @@ bool stepLedProgressBar(bool reset = false, bool isForward = true) {
 	return false;
 }
 
+bool confirmAnimation() {
+	static byte st = 0;
+	switch (st) {
+		case 0:
+			setLedsState(LEDS_AMOUNT, OFF);
+			st++;
+			break;
+		case 1:
+			if (millisTimer(100)) {
+				setLedsState(LEDS_AMOUNT, ON);
+				st++;
+			}
+			break;
+		case 2:
+			if (millisTimer(100)) {
+				setLedsState(LEDS_AMOUNT, OFF);
+				st = 0;
+				return true;
+			}
+			break;
+	}
+	return false;
+}
+
 
 #endif _ANIMATIONS_H_
