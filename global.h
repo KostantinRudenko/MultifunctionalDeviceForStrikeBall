@@ -28,7 +28,7 @@ const uint8_t TIMER_SELECT_AMOUNT = 4;
 // ==============================================
 
 // Structures
-const enum DeviceStates {
+enum DeviceStates {
 	WAIT_INPUT,
 	MODE_SELECT,
 	MODE_CONFIRM,
@@ -37,7 +37,7 @@ const enum DeviceStates {
 	AUTOSTART,
 	RUNNING
 };
-const enum GameModes {
+enum GameModes {
 	BASE_MODE,
 	SIREN_ONLY_MODE,
 	IGNITER_ONLY_MODE,
@@ -52,7 +52,7 @@ const uint8_t LED_PIN_3 = 2;
 const uint8_t LED_PIN_4 = 3;
 const uint8_t LED_PIN_5 = 4;
 const uint8_t LED_PIN_6 = 5;
-const uint8_t[] LEDS_ARRAY = [LED_PIN_1, LED_PIN_2, LED_PIN_3, LED_PIN_4, LED_PIN_5, LED_PIN_6];
+const uint8_t LEDS_ARRAY[] = {LED_PIN_1, LED_PIN_2, LED_PIN_3, LED_PIN_4, LED_PIN_5, LED_PIN_6};
 
 const uint8_t PIR_SENSOR_PIN = 6;
 

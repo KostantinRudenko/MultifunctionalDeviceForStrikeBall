@@ -29,6 +29,6 @@ public:
 		}
 		return false;
 	}
-}
+};
 
 #endif // _BUTTON_H_

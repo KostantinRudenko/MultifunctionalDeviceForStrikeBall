@@ -2,8 +2,8 @@
 #pragma region ______________________________ Includes
 
 #include "global.h"
-#include "animations.h"
 #include "functions.h"
+#include "animations.h"
 #include "button.h"
 
 #pragma endregion Includes
@@ -70,11 +70,10 @@ void loop() {
 
     case MODE_SELECT: // Выбор режима
       if (chooseButton.pressed()) {
-        gMode = (gMode+1) % MODES_AMOUNT;
-        modeLedPin = LEDS_ARRAY[gMode];
+        gMode = (gMode+1) % GAMEMODES_AMOUNT;
 
         setLedsState(LEDS_AMOUNT, OFF);
-        setLedState(modeLedPin, ON);
+        setLedState(LEDS_ARRAY[gMode], ON);
       }
       if (confirmButton.pressed()) {
         state = MODE_CONFIRM;
@@ -95,6 +94,7 @@ void loop() {
         timerSelectedPosition = (timerSelectedPosition+1)%TIMER_SELECT_AMOUNT;
         setLedsState(LEDS_AMOUNT, OFF);
         setLedState(LEDS_ARRAY[timerSelectedPosition], ON);
+      }
 
       if (confirmButton.pressed()) {
         state = TIMER_CONFIRM;
@@ -116,4 +116,5 @@ void loop() {
   
     case RUNNING: // Выбор и работа игрового режима
     break;
+  }
 }
