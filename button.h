@@ -9,7 +9,11 @@ private:
 	bool _stableState = BTN_RELEASED;
 
 public:
-	Button(uint8_t pin) { _pin = pin };
+	Button(uint8_t pin) { _pin = pin; }
+
+	void begin() {
+		pinMode(_pin, INPUT_PULLUP);
+	}
 	
 	bool pressed() {
 		bool cur = digitalRead(_pin);
