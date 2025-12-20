@@ -18,11 +18,13 @@ const uint16_t BUTTON_MONITORING_INTERVAL_MS   = 50;
 const uint16_t AUTOSTART_TIME                  = 10 * 1000;
 const uint16_t SIREN_TIME                      = 10 * 1000;
 const uint16_t IGNITER_TIME                    = 3  * 1000;
+const uint16_t TIMER_PERIOD					   = 5 * 60 * 1000;
 // ==============================================
 
 // Amount constants
-const uint8_t GAMEMODES_AMOUNT = 4;
-const uint8_t LEDS_AMOUNT      = 6;
+const uint8_t GAMEMODES_AMOUNT    = 4;
+const uint8_t LEDS_AMOUNT      	  = 6;
+const uint8_t TIMER_SELECT_AMOUNT = 4;
 // ==============================================
 
 // Structures
@@ -31,6 +33,7 @@ const enum DeviceStates {
 	MODE_SELECT,
 	MODE_CONFIRM,
 	TIMER_SELECTION,
+	TIMER_CONFIRM,
 	AUTOSTART,
 	RUNNING
 };

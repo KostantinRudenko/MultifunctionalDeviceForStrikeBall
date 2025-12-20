@@ -21,9 +21,8 @@
 uint8_t state = WAIT_INPUT;
 uint8_t gMode = BASE_MODE;
 uint8_t timerSelectedPosition = 0;
-uint8_t choosenTimer = 0;
 
-unsigned long timer = 0;
+unsigned long timerModePeriod = 0;
 
 bool isTimerSelectionActivated = false;
 bool isTimerRunning = false;
@@ -92,6 +91,21 @@ void loop() {
       break;
 
     case TIMER_SELECTION:
+      if (chooseButton.pressed()) {
+        timerSelectedPosition = (timerSelectedPosition+1)%TIMER_SELECT_AMOUNT;
+        setLedsState(LEDS_AMOUNT, OFF);
+        setLedState(LEDS_ARRAY[timerSelectedPosition], ON);
+
+      if (confirmButton.pressed()) {
+        state = TIMER_CONFIRM;
+      }
+      break;
+    
+    case TIMER_CONFIRM:
+      if (confirmAnimation()) {
+        timerModePeriod = (timerSelectedPosition+1)*TIMER_PERIOD;
+        state = AUTOSTART;
+      }
       break;
 
     case AUTOSTART: // запуск режима
