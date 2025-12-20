@@ -4,6 +4,7 @@
 #include "global.h"
 #include "animations.h"
 #include "functions.h"
+#include "button.h"
 
 #pragma endregion Includes
 
@@ -44,6 +45,9 @@ void setup() {
 
   pinMode(CHOOSE_BTN, INPUT_PULLUP);
   pinMode(CONFIRM_BTN, INPUT_PULLUP);
+
+  Button chooseButton(CHOOSE_BTN);
+  Button confirmButton(CONFIRM_BTN);
 }
 
 void loop() {
@@ -57,34 +61,31 @@ void loop() {
             stepLedProgressBar(true,isForward);
         }
 
-        if (IsAnyButtonIsPressed()) {
+        if (chooseButton.pressed() || confirmButton.pressed()) {
           state = MODE_SELECT;
           setLedsState(LEDS_AMOUNT, OFF);
         }
       }
       break;
 
-    case 1: // Выбор режима
-      if (digitalRead(CHOOSE_BTN) == BUTTON_CLICKED) {
+    case MODE_SELECT: // Выбор режима
+      if (chooseButton.pressed()) {
         gMode = (gMode+1) % MODES_AMOUNT;
-        modeLedPin = gMode;
-      }
-      AllLEDS(OFF);
-      digitalWrite(modeLedPin, ON);
-      delay(BUTTON_DELAY);
-      state = 2;
+        modeLedPin = LEDS_ARRAY[gMode];
 
-    case 2: // Ожидание подтверждения режима
-      if (digitalRead(CONFIRM_BTN) == BUTTON_CLICKED) {
-        BlinkOneLED(modeLedPin);
-        delay(LED_DELAY);
-        digitalWrite(modeLedPin, OFF);
-        
-        state = 3;
-        break;
+        setLedsState(LEDS_AMOUNT());
+        setLedState(modeLedPin, ON);
       }
+      if (confirmButton.pressed()) {
+        state = MODE_CONFIRM;
+      }
+      break;
 
-      state = 1;
+    case MODE_CONFIRM: // Ожидание подтверждения режима
+      BlinkOneLED(modeLedPin);
+      setLedState(modeLedPin, OFF);
+      
+      state = AUTOSTART;
       break;
 
     case 3: // запуск режима
