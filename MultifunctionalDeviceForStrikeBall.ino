@@ -64,11 +64,10 @@ void loop() {
             isForward = !isForward;
             stepLedProgressBar(true,isForward);
         }
-
-        if (chooseButton.pressed() || confirmButton.pressed()) {
-          state = MODE_SELECT;
-          setLedsState(LEDS_AMOUNT, OFF);
-        }
+      }
+      if (chooseButton.pressed() || confirmButton.pressed()) {
+        state = MODE_SELECT;
+        setLedsState(LEDS_AMOUNT, OFF);
       }
       break;
 
