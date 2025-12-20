@@ -56,7 +56,7 @@ void loop() {
       static bool isForward = true;
 
       if (millisTimer(WAITING_ANIMATION_INTERVAL_MS)) {
-        if ( && stepLedProgressBar(false,isForward) {
+        if (stepLedProgressBar(false,isForward) {
             isForward = !isForward;
             stepLedProgressBar(true,isForward);
         }
@@ -73,7 +73,7 @@ void loop() {
         gMode = (gMode+1) % MODES_AMOUNT;
         modeLedPin = LEDS_ARRAY[gMode];
 
-        setLedsState(LEDS_AMOUNT());
+        setLedsState(LEDS_AMOUNT, OFF);
         setLedState(modeLedPin, ON);
       }
       if (confirmButton.pressed()) {
