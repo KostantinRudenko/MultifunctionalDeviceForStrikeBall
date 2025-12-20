@@ -56,7 +56,7 @@ void loop() {
       static bool isForward = true;
 
       if (millisTimer(WAITING_ANIMATION_INTERVAL_MS)) {
-        if (stepLedProgressBar(false,isForward) {
+        if (stepLedProgressBar(false,isForward)) {
             isForward = !isForward;
             stepLedProgressBar(true,isForward);
         }
