@@ -50,10 +50,10 @@ void setup() {
 
 }
 
+static bool isForward = true;
 void loop() {
   switch (state) {
     case WAIT_INPUT: // Ожидание нажатия кнопки
-      static bool isForward = true;
 
       if (millisTimer(WAITING_ANIMATION_INTERVAL_MS)) {
         if (stepLedProgressBar(false,isForward)) {
