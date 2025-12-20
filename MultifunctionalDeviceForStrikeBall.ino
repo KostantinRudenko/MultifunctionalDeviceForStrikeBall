@@ -5,6 +5,7 @@
 #include "functions.h"
 #include "animations.h"
 #include "button.h"
+#include "device.h"
 
 #pragma endregion Includes
 
@@ -30,6 +31,10 @@ bool isTimerRunning = false;
 Button chooseButton(CHOOSE_BTN);
 Button confirmButton(CONFIRM_BTN);
 
+InputDevice PIRSensor(PIR_SENSOR_PIN);
+OutputDevice Siren(SIREN_PIN);
+OutputDevice Igniter(IGNITER_PIN);
+
 #pragma endregion Variables
 
 void setup() {
@@ -40,10 +45,9 @@ void setup() {
   pinMode(LED_PIN_5, OUTPUT);
   pinMode(LED_PIN_6, OUTPUT);
 
-  pinMode(PIR_SENSOR_PIN, INPUT);
-
-  pinMode(SIREN_PIN, OUTPUT);
-  pinMode(IGNITER_PIN, OUTPUT);
+  PIRSensor.begin();
+  Siren.begin();
+  Igniter.begin();
 
   confirmButton.begin();
   chooseButton.begin();
