@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #ifndef _FUNCTIONS_H_
 #define _FUNCTIONS_H_
 
@@ -23,6 +24,10 @@ bool TimerMode(const unsigned int& timer, bool& isTimerRunning);
 
 #pragma region ______________________________ CommonFunctions
 
+void setPinState(uint8_t pin, bool v) {
+  digitalWrite(pin, v);
+}
+
 bool millisTimer(uint32_t time, bool reset = false) {
 	static uint32_t startTime;
 	static bool isRunning = false;
@@ -42,14 +47,6 @@ bool millisTimer(uint32_t time, bool reset = false) {
 		return true;
 	}
 	else return false;
-}
-
-void setSirenState(uint8_t state) {
-  digitalWrite(SIREN_PIN, state);
-}
-
-void setIgniterState(uint8_t state) {
-  digitalWrite(IGNITER_PIN, state);
 }
 
 #pragma endregion CommonFunctions
