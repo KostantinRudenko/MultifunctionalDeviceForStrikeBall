@@ -109,6 +109,9 @@ void loop() {
       break;
 
     case AUTOSTART: // запуск режима
+      if (autostartAnimation()) {
+        state = RUNNING;
+      }
       break;
   
     case RUNNING: // Выбор и работа игрового режима
