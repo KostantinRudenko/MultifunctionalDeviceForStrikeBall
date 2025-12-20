@@ -63,5 +63,23 @@ bool confirmAnimation() {
 	return false;
 }
 
+bool autostartAnimation() {
+	static uint32_t autostartLightLedPeriod = AUTOSTART_TIME/LEDS_AMOUNT;
+	static byte st = 0;
+	switch (st) {
+		case 0:
+		if (millisTimer(autostartLightLedPeriod))
+			st = 1;
+		break;
+
+		case 1:
+		st = 0;
+		if (stepLedProgressBar(false,false))
+			return true;
+		break;
+	}
+	return false;
+}
+
 
 #endif _ANIMATIONS_H_
