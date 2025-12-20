@@ -111,39 +111,6 @@ void loop() {
     case AUTOSTART: // запуск режима
       break;
   
-    case 4: // Выбор и работа игрового режима
-      switch (gMode) {
-        case 0:
-          if (BasicMode()) {
-            delay(SIREN_WORK_TIME);
-            digitalWrite(SIREN_PIN, OFF);
-            digitalWrite(IGNITER_PIN, OFF);
-            state = 0;
-          }
-          break;
-        
-        case 1:
-          OnlySirenMode();
-          break;
-        
-        case 2:
-          if (OnlyIgniterMode()) {
-            state = 0;
-          }
-          break;
-
-        case 3:
-          if (!isTimerRunning) {
-            timer = millis() + choosenTimer * TEN_MINUTE_PERIOD;
-            isTimerRunning = true;
-          }
-          if (TimerMode(timer, isTimerRunning)) {
-            isTimerSelectionActivated = false;
-            state = 0;
-            break;
-          }
-          UpdateLedsForTimerMode(timer, choosenTimer);
-          break;
-    }
-  }
+    case RUNNING: // Выбор и работа игрового режима
+    break;
 }
