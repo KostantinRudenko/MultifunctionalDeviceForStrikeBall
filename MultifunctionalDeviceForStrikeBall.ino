@@ -118,6 +118,20 @@ void loop() {
       break;
   
     case RUNNING: // Выбор и работа игрового режима
+      switch (gMode) {
+        case BASE_MODE:
+          if (BasicMode()) {
+            state = WAIT_INPUT;
+          }
+          break;
+        case SIREN_ONLY_MODE:
+          break;
+        case IGNITER_ONLY_MODE:
+          break;
+        case TIMER_MODE:
+          break;
+      
+      }
     break;
   }
 }
