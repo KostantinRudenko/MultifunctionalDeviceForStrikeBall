@@ -66,13 +66,23 @@ bool BasicMode(InputDevice& PIR, OutputDevice& Siren, OutputDevice& Igniter) {
 	return false;
 }
 
-void OnlySirenMode() {
-  if (IsPirSensorActive()) {
-    digitalWrite(SIREN_PIN, ON);
-    delay(SIREN_WORK_TIME);
-    digitalWrite(SIREN_PIN, OFF);
-  }
-  delay(BOUNCE_DELAY);
+bool OnlySirenMode(InputDevice& PIR, OutputDevice& Siren) {
+	static uint8_t st = 0;
+	switch (st) {
+		case 0:
+		if (PIR.isActive()) {
+			st = 1;
+		}
+		break;
+		case 1:
+		bool sirenStoped = Siren.activateForMiliseconds(SIREN_TIME);
+		if (sirenStoped) {
+			st = 0;
+			return true;
+		}
+		break;
+	}
+	return false;
 }
 
 bool OnlyIgniterMode() {
