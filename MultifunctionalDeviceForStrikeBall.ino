@@ -127,6 +127,10 @@ void loop() {
           }
           break;
         case SIREN_ONLY_MODE:
+          if (OnlySirenMode(PIRSensor, Siren) {
+              Siren.resetDevice();
+              state = WAIT_INPUT;
+            }
           break;
         case IGNITER_ONLY_MODE:
           break;
