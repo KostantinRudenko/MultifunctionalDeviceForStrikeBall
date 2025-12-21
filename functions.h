@@ -61,18 +61,23 @@ bool IsPirSensorActive() {
 
 #pragma region ______________________________ ModeFunctions
 
-bool BasicMode() {
-  if (IsPirSensorActive()) {
-    digitalWrite(SIREN_PIN, ON);
-    digitalWrite(IGNITER_PIN, ON);
-    delay(IGNITER_DELAY);
-    return true;
-  }
-  else {
-    digitalWrite(IGNITER_PIN, OFF);
-  }
-  delay(BOUNCE_DELAY);
-  return false;
+bool BasicMode(InputDevice& PIR, OutputDevice& Siren, OutputDevice& Igniter) {
+	static uint8_t st = 0;
+	switch (st) {
+		case 0:
+			if (PIR.isActive()) {
+				st = 1;
+			}
+			break;
+		case 1:
+			bool sirenStoped = Siren.activateForSeconds(SIREN_TIME);
+			bool igniterStoped = Igniter.acitvateForSeconds(IGNITER_TIME);
+			if (sirenStoped && igniterStoped) {
+				st = 0
+				return true;
+			}
+		}
+	return false;
 }
 
 void OnlySirenMode() {
