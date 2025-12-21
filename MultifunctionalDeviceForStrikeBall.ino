@@ -120,7 +120,7 @@ void loop() {
     case RUNNING: // Выбор и работа игрового режима
       switch (gMode) {
         case BASE_MODE:
-          if (BasicMode()) {
+          if (BasicMode(PIRSensor, Siren, Igniter)) {
             state = WAIT_INPUT;
           }
           break;
