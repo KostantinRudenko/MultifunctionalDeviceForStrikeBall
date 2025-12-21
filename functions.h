@@ -135,7 +135,4 @@ bool TimerMode(uint32_t timerTimePeriod, OutputDevice& Igniter) {
 
 #pragma endregion ModeFunctions
 
-/*========================================================================
-  ========================================================================*/
-
 #endif // !_FUNCTIONS_H_
