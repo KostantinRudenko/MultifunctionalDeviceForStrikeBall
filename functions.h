@@ -56,10 +56,10 @@ bool BasicMode(InputDevice& PIR, OutputDevice& Siren, OutputDevice& Igniter) {
 			}
 			break;
 		case 1:
-			bool sirenStoped = Siren.activateForSeconds(SIREN_TIME);
-			bool igniterStoped = Igniter.acitvateForSeconds(IGNITER_TIME);
+			bool sirenStoped = Siren.activateForMiliseconds(SIREN_TIME);
+			bool igniterStoped = Igniter.activateForMiliseconds(IGNITER_TIME);
 			if (sirenStoped && igniterStoped) {
-				st = 0
+				st = 0;
 				return true;
 			}
 		}
