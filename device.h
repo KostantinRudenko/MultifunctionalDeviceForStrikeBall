@@ -57,7 +57,7 @@ class OutputDevice {
 		_st = 0;
 	}
 
-	bool activateForSeconds(uint8_t seconds) {
+	bool activateForMiliseconds(uint32_t miliseconds) {
 		switch (_st) {
 		case 0:
 			activate();
@@ -65,7 +65,7 @@ class OutputDevice {
 			_st = 1;
 			break;
 		case 1:
-			if (millis() - _timer >= 50) {
+			if (millis() - _timer >= miliseconds) {
 				_st = 2;
 			}
 			break;
