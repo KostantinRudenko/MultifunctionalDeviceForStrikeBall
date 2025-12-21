@@ -25,9 +25,6 @@ uint8_t timerSelectedPosition = 0;
 
 unsigned long timerModePeriod = 0;
 
-bool isTimerSelectionActivated = false;
-bool isTimerRunning = false;
-
 Button chooseButton(CHOOSE_BTN);
 Button confirmButton(CONFIRM_BTN);
 
