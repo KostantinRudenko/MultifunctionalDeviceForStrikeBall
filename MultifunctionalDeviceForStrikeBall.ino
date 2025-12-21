@@ -124,13 +124,13 @@ void loop() {
           }
           break;
         case SIREN_ONLY_MODE:
-          if (OnlySirenMode(PIRSensor, Siren) {
+          if (OnlySirenMode(PIRSensor, Siren)) {
               Siren.resetDevice();
               state = WAIT_INPUT;
             }
           break;
         case IGNITER_ONLY_MODE:
-          if (OnlyIgniterMode(PIRSensor, Igniter) {
+          if (OnlyIgniterMode(PIRSensor, Igniter)) {
               Igniter.resetDevice();
               state = WAIT_INPUT;
             }
