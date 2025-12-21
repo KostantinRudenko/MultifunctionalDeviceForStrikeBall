@@ -6,39 +6,53 @@
 #define ON  1
 #define OFF 0
 
+#define BTN_PRESSED  0
+#define BTN_RELEASED 1
+
+#define ACTIVE    1
+#define NOTACTIVE 0
+
 // Константы времени
-const uint8_t BUTTON_DELAY = 150;
-const uint8_t LED_DELAY = 250;
-const uint8_t RUNNING_LED_DELAY = 50;
-const uint8_t BOUNCE_DELAY = 50;
-const uint16_t IGNITER_DELAY = 500;
-const uint16_t PAUSE_DELAY = 500;
-
-const uint16_t SIREN_WORK_TIME = 10000;
-
-const uint16_t ONE_SECOND_PERIOD = 1000;
-const long TEN_MINUTE_PERIOD = 5000; //600000;
-
-const unsigned int AUTOSTART_TIME = 5000;
+const uint16_t WAITING_ANIMATION_INTERVAL_MS   = 50;
+const uint16_t BUTTON_MONITORING_INTERVAL_MS   = 50;
+const uint16_t AUTOSTART_TIME                  = 10 * 1000;
+const uint16_t SIREN_TIME                      = 10 * 1000;
+const uint16_t IGNITER_TIME                    = 3  * 1000;
+const uint16_t TIMER_PERIOD					   = 5 * 60 * 1000;
 // ==============================================
 
-// Статус кнопки
-const uint8_t BUTTON_CLICKED = 0;
+// Amount constants
+const uint8_t GAMEMODES_AMOUNT    = 4;
+const uint8_t LEDS_AMOUNT      	  = 6;
+const uint8_t TIMER_SELECT_AMOUNT = 4;
 // ==============================================
 
-// Константы количества
-const uint8_t LED_AMOUNT = 6;
-const uint8_t MODES_AMOUNT = 4;
-const uint8_t TIMER_PERIODS_AMOUNT = 5;
+// Structures
+enum DeviceStates {
+	WAIT_INPUT,
+	MODE_SELECT,
+	MODE_CONFIRM,
+	TIMER_SELECTION,
+	TIMER_CONFIRM,
+	AUTOSTART,
+	RUNNING
+};
+enum GameModes {
+	BASE_MODE,
+	SIREN_ONLY_MODE,
+	IGNITER_ONLY_MODE,
+	TIMER_MODE
+};
 // ==============================================
 
-// Константы пинов
+// Pins
 const uint8_t LED_PIN_1 = 0;
 const uint8_t LED_PIN_2 = 1;
 const uint8_t LED_PIN_3 = 2;
 const uint8_t LED_PIN_4 = 3;
 const uint8_t LED_PIN_5 = 4;
 const uint8_t LED_PIN_6 = 5;
+const uint8_t LEDS_ARRAY[] = {LED_PIN_1, LED_PIN_2, LED_PIN_3, LED_PIN_4, LED_PIN_5, LED_PIN_6};
 
 const uint8_t PIR_SENSOR_PIN = 6;
 

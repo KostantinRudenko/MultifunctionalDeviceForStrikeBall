@@ -1,0 +1,86 @@
+#ifndef _ANIMATIONS_H_
+#define _ANIMATIONS_H_
+
+#include "global.h"
+void setLedState(uint8_t ledNum, uint8_t state) {
+	digitalWrite(ledNum, state);
+}
+
+void setLedsState(uint8_t ledsAmount, uint8_t state) {
+	for (uint8_t i = 0; i < ledsAmount; i++) {
+		digitalWrite(LEDS_ARRAY[i], state);
+	}
+}
+
+bool stepLedProgressBar(bool reset = false, bool isForward = true) {
+	static int8_t ledPosition = 0;
+	if (reset && isForward) {
+		for (uint8_t i = 0; i < LEDS_AMOUNT; i++) digitalWrite(LEDS_ARRAY[i], OFF);
+		ledPosition = 0;
+		return false;
+	}
+	else if (reset && !isForward) {
+		for (uint8_t i = 0; i < LEDS_AMOUNT; i++) digitalWrite(LEDS_ARRAY[i], ON);
+		ledPosition = LEDS_AMOUNT-1;
+		return false;
+	}
+	if (isForward) {
+		if (ledPosition < LEDS_AMOUNT) {
+			digitalWrite(ledPosition, ON);
+			ledPosition++;
+		}
+		else return true;
+	} else {
+		if (ledPosition >= 0) {
+			digitalWrite(ledPosition, OFF);
+			ledPosition--;
+		}
+		else return true;
+	}
+	return false;
+}
+
+bool confirmAnimation() {
+	static byte st = 0;
+	switch (st) {
+		case 0:
+			setLedsState(LEDS_AMOUNT, OFF);
+			st++;
+			break;
+		case 1:
+			if (millisTimer(100)) {
+				setLedsState(LEDS_AMOUNT, ON);
+				st++;
+			}
+			break;
+		case 2:
+			if (millisTimer(100)) {
+				setLedsState(LEDS_AMOUNT, OFF);
+				st = 0;
+				return true;
+			}
+			break;
+	}
+	return false;
+}
+
+bool autostartAnimation() {
+	static uint32_t autostartLightLedPeriod = AUTOSTART_TIME/LEDS_AMOUNT;
+	static byte st = 0;
+	switch (st) {
+		case 0:
+		if (millisTimer(autostartLightLedPeriod))
+			st = 1;
+		break;
+
+		case 1:
+		st = 0;
+		if (stepLedProgressBar(false,false))
+			return true;
+		break;
+	}
+	return false;
+}
+
+
+#endif _ANIMATIONS_H_
