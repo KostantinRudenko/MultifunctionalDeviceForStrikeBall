@@ -121,6 +121,8 @@ void loop() {
       switch (gMode) {
         case BASE_MODE:
           if (BasicMode(PIRSensor, Siren, Igniter)) {
+            Siren.resetDevice();
+            Igniter.resetDevice();
             state = WAIT_INPUT;
           }
           break;
