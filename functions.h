@@ -8,20 +8,6 @@
 
 #pragma endregion Includes
 
-#pragma region ______________________________ FunctionsDefining
-
-bool IsPirSensorActive();
-bool IsChooseButtonPressed();
-bool IsConfirmButtonPressed();
-bool IsAnyButtonPressed();
-
-bool BasicMode();
-void OnlySirenMode();
-bool OnlyIgniterMode();
-bool TimerMode(const unsigned int& timer, bool& isTimerRunning);
-
-#pragma endregion FunctionsDefining
-
 #pragma region ______________________________ CommonFunctions
 
 void setPinState(uint8_t pin, bool v) {
