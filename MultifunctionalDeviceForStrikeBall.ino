@@ -2,10 +2,10 @@
 #pragma region ______________________________ Includes
 
 #include "global.h"
-#include "functions.h"
-#include "animations.h"
 #include "button.h"
 #include "device.h"
+#include "functions.h"
+#include "animations.h"
 
 #pragma endregion Includes
 
