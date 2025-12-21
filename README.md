@@ -2,6 +2,12 @@
 
 This device was developed for use in strikeball games.
 
+### Disclaimer
+
+⚠ This device hasn't been tested on real hardware.
+The project focuses on firmware architecture and logic design.
+Behavior on physical devices may differ.
+
 ### Hardware components
 
 - ESP32-C3
