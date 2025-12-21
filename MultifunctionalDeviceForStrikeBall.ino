@@ -143,7 +143,6 @@ void loop() {
             state = WAIT_INPUT;
           }
           break;
-      
       }
     break;
   }
