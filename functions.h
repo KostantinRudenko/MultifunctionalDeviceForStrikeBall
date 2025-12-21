@@ -76,27 +76,9 @@ void OnlySirenMode() {
 }
 
 bool OnlyIgniterMode() {
-  if (IsPirSensorActive()) {
-    digitalWrite(IGNITER_PIN, ON);
-    delay(IGNITER_DELAY);
-    digitalWrite(IGNITER_PIN, OFF);
-    return true;
-  }
-  delay(BOUNCE_DELAY);
-  return false;
 }
 
 bool TimerMode(const unsigned int& timer, bool& isTimerRunning) {
-  if (millis() > timer){
-    digitalWrite(IGNITER_PIN, ON);
-    digitalWrite(SIREN_PIN, ON);
-    delay(SIREN_WORK_TIME);
-    digitalWrite(SIREN_PIN, OFF);
-    digitalWrite(IGNITER_PIN, OFF);
-    isTimerRunning = false;
-    return true;
-  }
-  return false;
 }
 
 #pragma endregion ModeFunctions
