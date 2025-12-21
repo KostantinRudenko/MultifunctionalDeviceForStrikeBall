@@ -133,6 +133,10 @@ void loop() {
             }
           break;
         case IGNITER_ONLY_MODE:
+          if (OnlyIgniterMode(PIRSensor, Igniter) {
+              Igniter.resetDevice();
+              state = WAIT_INPUT;
+            }
           break;
         case TIMER_MODE:
           break;

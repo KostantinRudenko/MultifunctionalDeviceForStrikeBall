@@ -85,7 +85,23 @@ bool OnlySirenMode(InputDevice& PIR, OutputDevice& Siren) {
 	return false;
 }
 
-bool OnlyIgniterMode() {
+bool OnlyIgniterMode(InputDevice& PIR, OutputDevice& Igniter) {
+	static uint8_t st = 0;
+	switch (st) {
+		case 0:
+		if (PIR.isActive()) {
+			st = 1;
+		}
+		break;
+		case 1:
+		bool igniterStoped = Igniter.activateForMiliseconds(IGNITER_TIME);
+		if (igniterStoped) {
+			st = 0;
+			return true;
+		}
+		break;
+	}
+	return false;
 }
 
 bool TimerMode(const unsigned int& timer, bool& isTimerRunning) {
