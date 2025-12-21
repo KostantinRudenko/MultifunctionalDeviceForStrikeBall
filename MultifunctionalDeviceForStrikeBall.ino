@@ -136,6 +136,12 @@ void loop() {
             }
           break;
         case TIMER_MODE:
+          if (TimerMode(timerModePeriod, Igniter)) {
+            Igniter.resetDevice();
+            timerSelectedPosition = 0;
+            timerModePeriod = 0;
+            state = WAIT_INPUT;
+          }
           break;
       
       }
