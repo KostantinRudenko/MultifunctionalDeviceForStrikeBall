@@ -10,6 +10,8 @@
 
 #pragma region ______________________________ CommonFunctions
 
+void setLedsState(uint8_t ledsAmount, uint8_t state);
+
 void setPinState(uint8_t pin, bool v) {
   digitalWrite(pin, v);
 }
@@ -104,7 +106,31 @@ bool OnlyIgniterMode(InputDevice& PIR, OutputDevice& Igniter) {
 	return false;
 }
 
-bool TimerMode(const unsigned int& timer, bool& isTimerRunning) {
+bool TimerMode(uint32_t timerTimePeriod, OutputDevice& Igniter) {
+	static uint32_t startTime = millis();
+	static uint32_t ledStepForTimer = timerTimePeriod/LEDS_AMOUNT;
+	static uint8_t barLedsAmount = LEDS_AMOUNT;
+	static uint8_t st = 0;
+
+	switch (st) {
+		case 0:
+			if (map(millis()-startTime,0,timerTimePeriod,0,LEDS_AMOUNT) < barLedsAmount && barLedsAmount > 0) {
+				setLedsState(LEDS_AMOUNT, OFF);
+				setLedsState(barLedsAmount, ON);
+			}
+			if (millis()-startTime > timerTimePeriod) {
+				st = 1;
+			}
+			break;
+		case 1:
+			bool igniterStoped = Igniter.activateForMiliseconds(IGNITER_TIME);
+			if (igniterStoped) {
+				st = 0;
+				return true;
+			}
+			break;
+	}
+	return false;
 }
 
 #pragma endregion ModeFunctions
