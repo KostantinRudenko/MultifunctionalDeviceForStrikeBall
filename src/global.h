@@ -57,10 +57,10 @@ const uint8_t LEDS_ARRAY[] = {LED_PIN_1, LED_PIN_2, LED_PIN_3, LED_PIN_4, LED_PI
 const uint8_t PIR_SENSOR_PIN = 6;
 
 const uint8_t SIREN_PIN = 7;
-const uint8_t IGNITER_PIN = 10;
+const uint8_t IGNITER_PIN = 8;
 
-const uint8_t CHOOSE_BTN = 20;
-const uint8_t CONFIRM_BTN = 21;
+const uint8_t CHOOSE_BTN = 9;
+const uint8_t CONFIRM_BTN = 10;
 // ==============================================
 
 #pragma endregion Constants
