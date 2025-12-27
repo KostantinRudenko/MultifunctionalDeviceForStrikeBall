@@ -1,11 +1,11 @@
 
 #pragma region ______________________________ Includes
 
-#include "global.h"
-#include "button.h"
-#include "device.h"
-#include "functions.h"
-#include "animations.h"
+#include "src/global.h"
+#include "src/button.h"
+#include "src/device.h"
+#include "src/functions.h"
+#include "src/animations.h"
 
 #pragma endregion Includes
 
